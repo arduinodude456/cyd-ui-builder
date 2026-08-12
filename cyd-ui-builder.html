@@ -1,0 +1,1498 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CYD UI Builder</title>
+  <style>
+    :root {
+      --bg: #111827;
+      --panel: #182233;
+      --panel-2: #202d40;
+      --line: #35455d;
+      --muted: #8ea0ba;
+      --text: #edf3ff;
+      --accent: #ffd324;
+      --accent-2: #23c7b7;
+      --danger: #ff6f75;
+      --display: #161a20;
+      --shadow: 0 18px 42px rgba(0,0,0,.26);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--text);
+      background: radial-gradient(circle at 18% -8%, #263651 0, transparent 31rem), var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .app { min-height: 100vh; display: grid; grid-template-rows: auto 1fr; }
+    .topbar {
+      min-height: 62px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+      padding: 10px 18px; background: rgba(19, 29, 44, .95); border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px);
+    }
+    .brand { display: flex; align-items: center; gap: 9px; font-weight: 750; letter-spacing: .01em; white-space: nowrap; }
+    .brand-mark { width: 28px; height: 28px; border-radius: 6px; background: var(--accent); display: grid; place-items: center; color: #20200a; font-weight: 900; box-shadow: inset 0 0 0 3px #ffe985; }
+    .project-name { min-width: 160px; width: 210px; }
+    .spacer { flex: 1; }
+    .button-row { display: flex; gap: 7px; flex-wrap: wrap; }
+    .btn {
+      color: var(--text); border: 1px solid var(--line); border-radius: 7px; background: var(--panel-2);
+      padding: 7px 10px; font-size: 13px; line-height: 1.25; transition: .15s ease;
+    }
+    .btn:hover { border-color: #627899; transform: translateY(-1px); }
+    .btn.primary { color: #262000; background: var(--accent); border-color: var(--accent); font-weight: 750; }
+    .btn.danger { color: #ffc8cb; }
+    .btn.icon { padding: 5px 8px; font-size: 16px; }
+    .shell { display: grid; grid-template-columns: 260px minmax(420px, 1fr) 300px; min-height: calc(100vh - 62px); }
+    .sidebar { background: rgba(20, 30, 45, .76); border-right: 1px solid var(--line); padding: 16px; overflow: auto; }
+    .inspector { border-right: 0; border-left: 1px solid var(--line); }
+    .section-title { display: flex; align-items: center; justify-content: space-between; margin: 5px 0 10px; font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+    .palette { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 24px; }
+    .palette-item {
+      min-height: 68px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px;
+      padding: 9px; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; cursor: grab;
+    }
+    .palette-item:hover { border-color: var(--accent); background: #263249; }
+    .palette-symbol { color: var(--accent); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-weight: 800; }
+    .palette-label { font-size: 12px; }
+    .pages { display: grid; gap: 6px; }
+    .page-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px; }
+    .page-button { width: 100%; padding: 9px; text-align: left; }
+    .page-button.active { border-color: var(--accent); background: #3a3824; color: #fff1a2; }
+    .page-delete { color: var(--muted); background: transparent; border: 0; padding: 6px; }
+    .page-delete:hover { color: var(--danger); }
+    .add-page { width: 100%; margin-top: 10px; }
+    .canvas-area { display: grid; place-items: center; align-content: center; gap: 18px; padding: 34px 24px; min-width: 0; overflow: auto; }
+    .canvas-toolbar { display: flex; width: min(700px, 100%); justify-content: space-between; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; }
+    .canvas-toolbar code { color: #c2d7f5; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .device {
+      width: min(700px, 100%); aspect-ratio: 4 / 3; max-height: 525px; display: grid; place-items: center;
+      padding: clamp(14px, 4vw, 35px); border: 1px solid #40506a; border-radius: 24px; background: linear-gradient(145deg, #2a3549, #111925); box-shadow: var(--shadow);
+    }
+    .display-shell { position: relative; width: 100%; max-width: 640px; aspect-ratio: 4 / 3; padding: 11px; border-radius: 9px; background: #05080c; box-shadow: inset 0 0 0 1px #47566b, 0 0 0 1px #0b111c; }
+    .display {
+      position: relative; overflow: hidden; width: 100%; height: 100%; user-select: none; touch-action: none;
+      background-color: var(--display); background-image: linear-gradient(rgba(127, 148, 168, .08) 1px, transparent 1px), linear-gradient(90deg, rgba(127, 148, 168, .08) 1px, transparent 1px);
+      background-size: 5% 6.666%; border-radius: 2px;
+    }
+    .display.empty::after { content: "Elemente hier ablegen"; position: absolute; inset: 0; display: grid; place-items: center; color: #8192a6; font-size: clamp(12px, 2vw, 16px); pointer-events: none; }
+    .display.drop-active { box-shadow: inset 0 0 0 3px var(--accent); }
+    .element { position: absolute; cursor: move; transform-origin: top left; white-space: nowrap; }
+    .element.selected::after { content: ""; position: absolute; inset: -4px; border: 1px dashed var(--accent); outline: 1px solid rgba(0,0,0,.6); pointer-events: none; }
+    .screen-label { line-height: 1.1; }
+    .screen-button { display: grid; place-items: center; border: 1px solid rgba(255,255,255,.62); font-weight: 700; overflow: hidden; text-align: center; }
+    .screen-rect { border: 1px solid rgba(255,255,255,.45); }
+    .screen-line { height: 2px; transform-origin: left center; }
+    .screen-circle { border: 2px solid rgba(255,255,255,.68); border-radius: 50%; }
+    .screen-progress { overflow: hidden; border: 1px solid rgba(255,255,255,.65); border-radius: 2px; }
+    .screen-progress > span { display: block; height: 100%; }
+    .screen-checkbox { display: flex; align-items: center; gap: 5px; }
+    .screen-checkbox > span:first-child { display: grid; place-items: center; width: 15px; height: 15px; border: 1px solid currentColor; font-weight: 900; }
+    .coordinates { color: var(--muted); font-size: 12px; }
+    .inspector-empty { color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .prop-group { display: grid; gap: 10px; }
+    .property { display: grid; gap: 5px; }
+    .property label { color: #b8c6d8; font-size: 12px; }
+    .property input, .property select, .project-name {
+      width: 100%; color: var(--text); background: #101a29; border: 1px solid var(--line); border-radius: 6px; padding: 7px 8px; outline: none;
+    }
+    .property input:focus, .property select:focus, .project-name:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255, 211, 36, .16); }
+    .property input[type="color"] { height: 34px; padding: 3px; }
+    .property-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .helper { margin: 12px 0 0; color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .divider { border: 0; border-top: 1px solid var(--line); margin: 17px 0; }
+    .settings summary { cursor: pointer; color: #d9e4f1; font-size: 13px; }
+    .settings-content { padding-top: 12px; }
+    dialog { width: min(950px, calc(100% - 30px)); max-height: min(84vh, 840px); color: var(--text); background: #162235; border: 1px solid #43536c; border-radius: 12px; padding: 0; box-shadow: var(--shadow); }
+    dialog::backdrop { background: rgba(2, 5, 10, .72); backdrop-filter: blur(2px); }
+    .dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+    .dialog-head h2 { margin: 0; font-size: 16px; }
+    .code-output { display: block; margin: 0; padding: 17px; overflow: auto; color: #d9efff; background: #0b1320; font: 12px/1.48 ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre; }
+    .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--line); }
+    .toast { position: fixed; z-index: 40; left: 50%; bottom: 20px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; padding: 9px 13px; border-radius: 7px; color: #111a23; background: #c8f8ee; font-size: 13px; font-weight: 700; transition: .2s ease; }
+    .toast.visible { opacity: 1; transform: translate(-50%, 0); }
+    @media (max-width: 980px) { .shell { grid-template-columns: 220px minmax(360px, 1fr); } .inspector { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); } .inspector .prop-group, .inspector .inspector-empty { max-width: 500px; } }
+    @media (max-width: 700px) { .shell { display: block; } .sidebar, .inspector { border: 0; border-bottom: 1px solid var(--line); } .sidebar { padding: 12px; } .palette { grid-template-columns: repeat(4, 1fr); margin-bottom: 14px; } .palette-item { min-height: 55px; } .pages { grid-template-columns: repeat(2, minmax(0, 1fr)); } .canvas-area { padding: 20px 12px; } .device { border-radius: 14px; } .topbar { padding: 9px 12px; gap: 9px; } .spacer { display: none; } .project-name { order: 4; width: 100%; } }
+    @media (max-width: 440px) { .palette { grid-template-columns: repeat(2, 1fr); } .button-row { width: 100%; } .button-row .btn { flex: 1; } }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">CY</span><span>CYD UI Builder</span></div>
+      <input id="project-name" class="project-name" aria-label="Projektname" value="Mein CYD Projekt">
+      <div class="spacer"></div>
+      <div class="button-row">
+        <button class="btn" id="new-project" type="button">Neu</button>
+        <button class="btn" id="save-project" type="button">Projekt speichern</button>
+        <button class="btn" id="load-project" type="button">Projekt laden</button>
+        <button class="btn primary" id="export-code" type="button">Arduino-Code exportieren</button>
+        <input id="load-file" type="file" accept="application/json,.json" hidden>
+      </div>
+    </header>
+
+    <section class="shell">
+      <aside class="sidebar">
+        <div class="section-title"><span>UI-Elemente</span><span>ziehen</span></div>
+        <div id="palette" class="palette" aria-label="UI-Elemente"></div>
+        <div class="section-title"><span>Seiten</span><span id="page-count"></span></div>
+        <div id="pages" class="pages"></div>
+        <button id="add-page" class="btn add-page" type="button">+ Seite anlegen</button>
+      </aside>
+
+      <section class="canvas-area" aria-label="Display-Entwurf">
+        <div class="canvas-toolbar"><span><code>ILI9341 · 320 × 240 · Landscape</code></span><span id="active-page-caption"></span></div>
+        <div class="device">
+          <div class="display-shell">
+            <div id="display" class="display empty" aria-label="Display-Fläche"></div>
+          </div>
+        </div>
+        <div id="coordinates" class="coordinates">Koordinaten: x 0, y 0</div>
+      </section>
+
+      <aside class="sidebar inspector">
+        <div class="section-title"><span>Eigenschaften</span><button class="btn icon" id="delete-element" type="button" aria-label="Ausgewähltes Element löschen" data-tooltip="Element löschen">⌫</button></div>
+        <div id="inspector"></div>
+      </aside>
+    </section>
+  </main>
+
+  <dialog id="code-dialog">
+    <div class="dialog-head"><h2>Arduino-Sketch für ESP32 / Cheap Yellow Display</h2><button class="btn icon" id="close-dialog" type="button" aria-label="Dialog schließen">×</button></div>
+    <pre id="code-output" class="code-output"></pre>
+    <div class="dialog-actions"><button id="copy-code" class="btn" type="button">Code kopieren</button><button id="download-code" class="btn primary" type="button">.ino herunterladen</button></div>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /*
+      Element registry — der zentrale Erweiterungspunkt.
+      Ein neues UI-Element benötigt nur: label, icon, defaults, fields, preview und arduino.
+      preview(element) liefert HTML für die Editoransicht; arduino(element, ctx) erzeugt Draw-Code.
+    */
+        const ELEMENT_TYPES = {
+      label: {
+        label: 'Text', icon: 'T',
+        defaults: { text: 'Text', x: 16, y: 16, color: '#ffffff', size: 2, variable: '' },
+        fields: [
+          { key: 'text', label: 'Text', type: 'text' },
+          { key: 'variable', label: 'Variable (optional)', type: 'text' },
+          { key: 'x', label: 'X', type: 'number', min: 0, max: 319 },
+          { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 },
+          { key: 'size', label: 'Textgröße', type: 'number', min: 1, max: 6 },
+          { key: 'color', label: 'Farbe', type: 'color' }
+        ],
+        preview: e => `<div class="screen-label" style="color:${e.color};font-size:${e.size * 8}px">${escapeHtml(e.variable ? `{${e.variable}}` : e.text)}</div>`,
+        arduino: e => e.variable ? `drawText(${e.x}, ${e.y}, String(${cppId(e.variable)}).c_str(), ${color565(e.color)}, ${e.size});` : `drawText(${e.x}, ${e.y}, ${cppString(e.text)}, ${color565(e.color)}, ${e.size});`
+      },
+      variableInt: {
+        label: 'Variable(Int)', icon: 'x',
+        defaults: { text: 'myInt', x: 16, y: 16, color: '#ffffff', size: 0 },
+        fields: [
+          { key: 'text', label: 'Name', type: 'text' }, { key: 'size', label: 'Wert', type: 'number', min: -32768, max: 32767 },
+        ],
+        preview: e => `<div class="screen-label" style="font-size:16px;color:#aaa">int ${escapeHtml(e.text)} = ${e.size}</div>`,
+        arduino: e => `// Variable: int ${cppId(e.text)}`
+      },
+      variableChar: {
+        label: 'Variable(Char)', icon: 'c',
+        defaults: { text: 'myString', x: 16, y: 16, color: '#ffffff', size: 'Hallo', maxLength: 32 },
+        fields: [
+          { key: 'text', label: 'Name', type: 'text' }, 
+          { key: 'size', label: 'Wert', type: 'text' },
+          { key: 'maxLength', label: 'Max. Länge', type: 'number', min: 1, max: 256 }
+        ],
+        preview: e => `<div class="screen-label" style="font-size:16px;color:#aaa">char ${escapeHtml(e.text)}[] = "${escapeHtml(e.size)}"</div>`,
+        arduino: e => `// Variable: char ${cppId(e.text)}[]`
+      },
+      variableBool: {
+        label: 'Variable(Bool)', icon: '?',
+        defaults: { text: 'myBool', x: 16, y: 16, color: '#ffffff', size: 0 },
+        fields: [
+          { key: 'text', label: 'Name', type: 'text' }, { key: 'size', label: 'Wert (0/1)', type: 'number', min: 0, max: 1 },
+        ],
+        preview: e => `<div class="screen-label" style="font-size:16px;color:#aaa">bool ${escapeHtml(e.text)} = ${e.size == 0 ? 'false' : 'true'}</div>`,
+        arduino: e => `// Variable: bool ${cppId(e.text)}`
+      },
+      declaration: {
+        label: 'Deklaration', icon: 'D',
+        defaults: { code: '// Globale Deklarationen hier' },
+        fields: [{ key: 'code', label: 'Code', type: 'textarea' }],
+        preview: e => `<div style="color:var(--muted);font-size:11px;">Globale Deklaration</div>`,
+        arduino: (e, ctx) => { ctx.globalDeclarations.push(e.code); return '// User Declaration'; }
+      },
+      setupCode: {
+        label: 'Setup-Code', icon: 'S',
+        defaults: { code: '// Code für setup()' },
+        fields: [{ key: 'code', label: 'Code', type: 'textarea' }],
+        preview: e => `<div style="color:var(--muted);font-size:11px;">Setup-Code</div>`,
+        arduino: (e, ctx) => { ctx.setupCode.push(e.code); return '// User Setup Code'; }
+      },
+      button: {
+        label: 'Schaltfläche', icon: '▣',
+        defaults: { text: 'Taste', x: 24, y: 48, w: 120, h: 36, color: '#1d2a38', textColor: '#ffffff', radius: 5, action: 'none', code: '', executeCode: false },
+        fields: [
+          { key: 'text', label: 'Beschriftung', type: 'text' }, { key: 'x', label: 'X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 },
+          { key: 'w', label: 'Breite', type: 'number', min: 1, max: 320 }, { key: 'h', label: 'Höhe', type: 'number', min: 1, max: 240 }, { key: 'radius', label: 'Radius', type: 'number', min: 0, max: 50 },
+          { key: 'color', label: 'Hintergrund', type: 'color' }, { key: 'textColor', label: 'Textfarbe', type: 'color' }, { key: 'action', label: 'Bei Berührung', type: 'action' },
+          { key: 'executeCode', label: 'Code ausführen', type: 'checkbox' }, { key: 'code', label: 'Arduino-Code', type: 'textarea' }
+        ],
+        preview: e => `<div class="screen-button" style="width:${e.w}px;height:${e.h}px;border-radius:${e.radius}px;background:${e.color};color:${e.textColor};font-size:13px">${escapeHtml(e.text)}</div>`,
+        arduino: e => `drawButton(${e.x}, ${e.y}, ${e.w}, ${e.h}, ${e.radius}, ${color565(e.color)}, ${color565(e.textColor)}, ${cppString(e.text)});`,
+        touch: true
+      },
+      rectangle: {
+        label: 'Rechteck', icon: '□',
+        defaults: { x: 18, y: 100, w: 120, h: 52, color: '#2778be', filled: true },
+        fields: [
+          { key: 'x', label: 'X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 }, { key: 'w', label: 'Breite', type: 'number', min: 1, max: 320 }, { key: 'h', label: 'Höhe', type: 'number', min: 1, max: 240 },
+          { key: 'color', label: 'Farbe', type: 'color' }, { key: 'filled', label: 'Gefüllt', type: 'checkbox' }
+        ],
+        preview: e => `<div class="screen-rect" style="width:${e.w}px;height:${e.h}px;background:${e.filled ? e.color : 'transparent'};border-color:${e.color}"></div>`,
+        arduino: e => e.filled ? `tft.fillRect(${e.x}, ${e.y}, ${e.w}, ${e.h}, ${color565(e.color)});` : `tft.drawRect(${e.x}, ${e.y}, ${e.w}, ${e.h}, ${color565(e.color)});`
+      },
+      line: {
+        label: 'Linie', icon: '╱',
+        defaults: { x: 20, y: 176, length: 170, thickness: 2, color: '#ffffff' },
+        fields: [
+          { key: 'x', label: 'X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 }, { key: 'length', label: 'Länge', type: 'number', min: 1, max: 320 }, { key: 'thickness', label: 'Dicke', type: 'number', min: 1, max: 12 }, { key: 'color', label: 'Farbe', type: 'color' }
+        ],
+        preview: e => `<div class="screen-line" style="width:${e.length}px;height:${e.thickness}px;background:${e.color}"></div>`,
+        arduino: e => `tft.fillRect(${e.x}, ${e.y}, ${e.length}, ${e.thickness}, ${color565(e.color)});`
+      },
+      circle: {
+        label: 'Kreis', icon: '○',
+        defaults: { x: 212, y: 45, radius: 25, color: '#23c7b7', filled: false },
+        fields: [
+          { key: 'x', label: 'Mittelpunkt X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Mittelpunkt Y', type: 'number', min: 0, max: 239 }, { key: 'radius', label: 'Radius', type: 'number', min: 1, max: 119 }, { key: 'color', label: 'Farbe', type: 'color' }, { key: 'filled', label: 'Gefüllt', type: 'checkbox' }
+        ],
+        position: e => ({ x: e.x - e.radius, y: e.y - e.radius }),
+        preview: e => `<div class="screen-circle" style="width:${e.radius * 2}px;height:${e.radius * 2}px;background:${e.filled ? e.color : 'transparent'};border-color:${e.color}"></div>`,
+        arduino: e => e.filled ? `tft.fillCircle(${e.x}, ${e.y}, ${e.radius}, ${color565(e.color)});` : `tft.drawCircle(${e.x}, ${e.y}, ${e.radius}, ${color565(e.color)});`
+      },
+      progress: {
+        label: 'Fortschritt', icon: '▰',
+        defaults: { x: 24, y: 195, w: 180, h: 16, value: 65, color: '#23c7b7', background: '#273344', variable: '' },
+        fields: [
+          { key: 'variable', label: 'Quellvariable', type: 'text' }, { key: 'x', label: 'X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 }, { key: 'w', label: 'Breite', type: 'number', min: 1, max: 320 }, { key: 'h', label: 'Höhe', type: 'number', min: 1, max: 240 }, { key: 'value', label: 'Testwert (%)', type: 'number', min: 0, max: 100 }, { key: 'color', label: 'Wertfarbe', type: 'color' }, { key: 'background', label: 'Hintergrund', type: 'color' }
+        ],
+        preview: e => `<div class="screen-progress" style="width:${e.w}px;height:${e.h}px;background:${e.background};border-color:${e.color}"><span style="width:${e.value}%;background:${e.color}"></span></div>`,
+        arduino: e => `drawProgress(${e.x}, ${e.y}, ${e.w}, ${e.h}, ${e.variable || e.value}, ${color565(e.color)}, ${color565(e.background)});`
+      },
+      checkbox: {
+        label: 'Kontrollfeld', icon: '☑',
+        defaults: { text: 'Aktiv', variable: 'checkboxState', x: 218, y: 120, checked: true, color: '#ffffff', size: 2 },
+        fields: [
+          { key: 'text', label: 'Beschriftung', type: 'text' }, { key: 'variable', label: 'Variablenname', type: 'text' }, { key: 'x', label: 'X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 }, { key: 'size', label: 'Textgröße', type: 'number', min: 1, max: 4 }, { key: 'color', label: 'Farbe', type: 'color' }, { key: 'checked', label: 'Anfangswert', type: 'checkbox' }
+        ],
+        preview: e => `<div class="screen-checkbox" style="color:${e.color};font-size:${e.size * 8}px"><span>${e.checked ? '✓' : ''}</span><span>${escapeHtml(e.text)}</span></div>`,
+        arduino: e => `drawCheckbox(${e.x}, ${e.y}, ${cppId(e.variable)}, ${color565(e.color)}, ${e.size}, ${cppString(e.text)});`,
+        touch: true
+      },
+      touchZone: {
+        label: 'Touch-Zone', icon: '☐',
+        defaults: { gesture: 'tap', x: 20, y: 20, w: 80, h: 60, action: 'none', executeCode: false, code: '' },
+        fields: [
+          { key: 'gesture', label: 'Auslösen', type: 'select', options: [['tap','Tippen'],['swipeLeft','Wischen links'],['swipeRight','Wischen rechts'],['swipeUp','Wischen hoch'],['swipeDown','Wischen runter']] },
+          { key: 'x', label: 'X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 }, { key: 'w', label: 'Breite', type: 'number', min: 1, max: 320 }, { key: 'h', label: 'Höhe', type: 'number', min: 1, max: 240 },
+          { key: 'action', label: 'Bei Berührung', type: 'action' }, { key: 'executeCode', label: 'Code ausführen', type: 'checkbox' }, { key: 'code', label: 'Arduino-Code', type: 'textarea' }
+        ],
+        preview: e => `<div style="width:${e.w}px;height:${e.h}px;border:1px dashed rgba(255,255,255,.45);background:rgba(255,255,255,.05);"></div>`,
+        arduino: e => `// TouchZone`,
+        touch: true
+      },
+      input: {
+        label: 'Eingabefeld', icon: '⌨',
+        defaults: { x: 20, y: 20, w: 140, h: 28, text: '', placeholder: 'Text...', variable: 'inputText', maxLength: 32, color: '#ffffff', background: '#333333' },
+        fields: [
+          { key: 'placeholder', label: 'Placeholder', type: 'text' }, { key: 'variable', label: 'Variable', type: 'text' }, { key: 'maxLength', label: 'Max. Zeichen', type: 'number', min: 1, max: 63 }, { key: 'x', label: 'X', type: 'number' }, { key: 'y', label: 'Y', type: 'number' }, { key: 'w', label: 'Breite', type: 'number' }, { key: 'h', label: 'Höhe', type: 'number' }, { key: 'background', label: 'Hintergrund', type: 'color' }, { key: 'color', label: 'Textfarbe', type: 'color' }
+        ],
+        preview: e => `<input value="${escapeHtml(e.text)}" placeholder="${escapeHtml(e.placeholder)}" style="width:${e.w}px;height:${e.h}px;background:${e.background};color:${e.color};border:1px solid #777;" disabled>`,
+        arduino: e => `drawInputField(${e.x}, ${e.y}, ${e.w}, ${e.h}, ${cppId(e.variable)}, ${cppString(e.placeholder)}, ${color565(e.background)}, ${color565(e.color)});`,
+        touch: true
+      },
+      listbox: {
+        label: 'Listbox', icon: '☰',
+        defaults: { x: 16, y: 16, w: 140, h: 96, items: 'Eintrag 1\nEintrag 2\nEintrag 3', variable: 'listSelected', selectedIndex: 0, rowHeight: 20, color: '#ffffff', background: '#1c2531', selectedColor: '#ffd324' },
+        fields: [
+          { key: 'items', label: 'Einträge (eine Zeile je Eintrag)', type: 'textarea' }, { key: 'variable', label: 'Variable (Index)', type: 'text' }, { key: 'rowHeight', label: 'Zeilenhöhe', type: 'number', min: 10, max: 60 }, { key: 'x', label: 'X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 }, { key: 'w', label: 'Breite', type: 'number', min: 1, max: 320 }, { key: 'h', label: 'Höhe', type: 'number', min: 1, max: 240 }, { key: 'background', label: 'Hintergrund', type: 'color' }, { key: 'color', label: 'Textfarbe', type: 'color' }, { key: 'selectedColor', label: 'Auswahlfarbe', type: 'color' }
+        ],
+        preview: e => `<div style="width:${e.w}px;height:${e.h}px;overflow:hidden;background:${e.background};border:1px solid #555;font-size:12px">${String(e.items).split('\n').map((line, index) => `<div style="height:${e.rowHeight}px;line-height:${e.rowHeight}px;padding-left:4px;box-sizing:border-box;color:${index === e.selectedIndex ? e.selectedColor : e.color};${index === e.selectedIndex ? 'background:rgba(255,255,255,.08);' : ''}">${escapeHtml(line)}</div>`).join('')}</div>`,
+        arduino: e => `drawListbox(${e.x}, ${e.y}, ${e.w}, ${e.h}, ${e.rowHeight}, ${cppId(e.variable)}_items, ${cppId(e.variable)}_itemCount, ${cppId(e.variable)}, ${color565(e.background)}, ${color565(e.color)}, ${color565(e.selectedColor)});`,
+        touch: true
+      },
+      scrollableText: {
+        label: 'Scroll-Text', icon: '↕',
+        defaults: { x: 16, y: 16, w: 180, h: 100, text: 'Langer Text, der nicht in das Feld passt.\nZeile 2\nZeile 3\nZeile 4\nZeile 5', variable: 'scrollOffset', lineHeight: 16, color: '#ffffff', background: '#1c2531' },
+        fields: [
+          { key: 'text', label: 'Text (mit Zeilenumbrüchen)', type: 'textarea' }, { key: 'variable', label: 'Variable (Scroll-Offset)', type: 'text' }, { key: 'lineHeight', label: 'Zeilenhöhe', type: 'number', min: 8, max: 40 }, { key: 'x', label: 'X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 }, { key: 'w', label: 'Breite', type: 'number', min: 1, max: 320 }, { key: 'h', label: 'Höhe', type: 'number', min: 1, max: 240 }, { key: 'background', label: 'Hintergrund', type: 'color' }, { key: 'color', label: 'Textfarbe', type: 'color' }
+        ],
+        preview: e => `<div style="width:${e.w}px;height:${e.h}px;overflow:hidden;background:${e.background};border:1px solid #555;color:${e.color};font-size:11px;padding:3px;box-sizing:border-box;white-space:pre-line">${escapeHtml(e.text)}</div>`,
+        arduino: e => `drawScrollableText(${e.x}, ${e.y}, ${e.w}, ${e.h}, ${cppId(e.variable)}_lines, ${cppId(e.variable)}_lineCount, ${e.lineHeight}, ${cppId(e.variable)}, ${color565(e.background)}, ${color565(e.color)});`,
+        touch: true, gestureOnly: true
+      },
+      multilineText: {
+        label: 'Mehrzeiliger Text', icon: '¶',
+        defaults: { variable: '', x: 16, y: 16, w: 180, text: 'Mehrzeiliger Text, der automatisch umgebrochen wird, sobald die Breite überschritten ist.', size: 2, lineSpacing: 4, color: '#ffffff' },
+        fields: [
+          { key: 'text', label: 'Text', type: 'textarea' }, { key: 'variable', label: 'Variable (optional)', type: 'text' },{ key: 'x', label: 'X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 }, { key: 'w', label: 'Breite', type: 'number', min: 1, max: 320 }, { key: 'size', label: 'Textgröße', type: 'number', min: 1, max: 4 }, { key: 'lineSpacing', label: 'Zeilenabstand', type: 'number', min: 0, max: 20 }, { key: 'color', label: 'Farbe', type: 'color' }
+        ],
+        preview: e => `<div style="width:${e.w}px;color:${e.color};font-size:${e.size * 8}px;line-height:1.3;white-space:pre-wrap;word-break:break-word">${escapeHtml(e.variable ? `{${e.variable}}` : e.text)}</div>`,
+        arduino: e => e.variable ? `drawMultilineText(${e.x}, ${e.y}, ${e.w},String(${cppId(e.variable)}).c_str(), ${color565(e.color)}, ${e.size}, ${e.lineSpacing});` : `drawMultilineText(${e.x}, ${e.y}, ${e.w},${cppString(e.text)}, ${color565(e.color)}, ${e.size}, ${e.lineSpacing});`
+      },
+      codeExecutor: {
+        label: 'Code (unsichtbar)', icon: '⚙',
+        defaults: { code: '// Dein Arduino-Code hier', executeOn: 'pageLoad', intervalMs: 1000, varName: "" },
+        fields: [
+          { key: 'code', label: 'Arduino-Code', type: 'textarea' },
+		  { key: 'varName', label: 'Name', type: 'text' },
+          { key: 'executeOn', label: 'Ausführen', type: 'select', options: [['pageLoad', 'Beim Laden der Seite'], ['interval', 'Alle x Millisekunden']] },
+          { key: 'intervalMs', label: 'Intervall (ms)', type: 'number', min: 100, max: 60000 }
+        ],
+        preview: e => `<div style="color:var(--muted);font-size:12px;">Code-Executor: ${e.executeOn === 'pageLoad' ? 'Beim Laden der Seite' : 'Alle ' + e.intervalMs + 'ms'}</div>`,
+        arduino: (e, ctx) => {
+          if (e.executeOn === 'pageLoad') {
+            ctx.onPageLoad.push(e.code);
+            return '// Code-Executor (on page load)';
+          } else if (e.executeOn === 'interval') {
+            //const varName = 'codeExecutor_' + Math.random().toString(36).substr(2, 5);
+            ctx.globalDeclarations.push('unsigned long ' + e.varName + ' = 0;');
+            ctx.loopCode.push('\n  if (millis() - ' + e.varName + ' > ' + e.intervalMs + ') {\n    ' + e.varName + ' = millis();\n    ' + e.code.split('\n').map(line => '    ' + line).join('\n') + '\n  }\n');
+            return '// Code-Executor (interval)';
+          }
+          return '// Code-Executor (unbekannter Typ)';
+        }
+      },
+      bitmap: {
+        label: 'Bild (Bitmap)', icon: '▧',
+        defaults: { x: 0, y: 0, w: 64, h: 64, color: '#ffffff', sourceName: '', previewData: '', bitmapData: '' },
+        fields: [
+          { key: 'sourceName', label: 'Bilddatei', type: 'file', accept: 'image/*' }, { key: 'w', label: 'Breite', type: 'number', min: 1, max: 320 }, { key: 'h', label: 'Höhe', type: 'number', min: 1, max: 240 }, { key: 'color', label: 'Farbe', type: 'color' },
+          { key: 'x', label: 'X', type: 'number', min: 0, max: 319 }, { key: 'y', label: 'Y', type: 'number', min: 0, max: 239 }
+        ],
+        preview: e => e.previewData ? `<div title="${escapeHtml(e.sourceName || 'Bitmap')}" style="width:${e.w}px;height:${e.h}px;background:${e.color};mask:url('${e.previewData}') center / 100% 100% no-repeat;-webkit-mask:url('${e.previewData}') center / 100% 100% no-repeat;"></div>` : `<div style="width:${e.w}px;height:${e.h}px;display:grid;place-items:center;border:1px dashed #77869a;color:var(--muted);font-size:11px;white-space:normal;text-align:center;">Bilddatei wählen</div>`,
+        arduino: e => `tft.drawBitmap(${e.x}, ${e.y}, ${cppId(e.id)}_data, ${e.w}, ${e.h}, ${color565(e.color)});`
+      },
+      weatherTemperature: {
+        label: 'Temperatur', icon: '°C',
+        defaults: { variable: 'temperature', day: 'today', mode: 'min', intervalMs: 600000 },
+        fields: [
+          { key: 'variable', label: 'Zielvariable (int)', type: 'text' }, { key: 'day', label: 'Tag', type: 'select', options: [['today', 'Heute'], ['tomorrow', 'Morgen'], ['dayAfterTomorrow', 'Übermorgen']] }, { key: 'mode', label: 'Wert', type: 'select', options: [['min', 'Minimum'], ['max', 'Maximum']] }, { key: 'intervalMs', label: 'Aktualisierung (ms)', type: 'number', min: 60000, max: 86400000 }
+        ],
+        preview: e => `<div style="color:var(--muted);font-size:12px;">Temperatur ${e.mode === 'min' ? 'Min.' : 'Max.'}: → ${escapeHtml(e.variable)}</div>`,
+        arduino: () => '// Wetter-Spezialvariable: Temperatur'
+      },
+      weatherRainChance: {
+        label: 'Regenwahrsch.', icon: '%',
+        defaults: { variable: 'rainChance', range: 'today', intervalMs: 600000 },
+        fields: [
+          { key: 'variable', label: 'Zielvariable (int)', type: 'text' }, { key: 'range', label: 'Zeitraum', type: 'select', options: [['today', 'Heute'], ['tomorrow', 'Morgen'], ['next5Days', 'Nächste 5 Tage']] }, { key: 'intervalMs', label: 'Aktualisierung (ms)', type: 'number', min: 60000, max: 86400000 }
+        ],
+        preview: e => `<div style="color:var(--muted);font-size:12px;">Regenwahrscheinlichkeit: → ${escapeHtml(e.variable)}</div>`,
+        arduino: () => '// Wetter-Spezialvariable: Regenwahrscheinlichkeit'
+      }
+    };
+
+    const DEFAULT_PROJECT = () => ({
+      name: 'Mein CYD Projekt',
+      activePageId: 'page_home', selectedId: null,
+      settings: { tftCS: 15, tftDC: 2, tftRST: -1, touchCS: 33, rotation: 1, touchMinX: 200, touchMaxX: 3800, touchMinY: 200, touchMaxY: 3800 },
+      pages: [{ id: 'page_home', name: 'Start', elements: [] }]
+    });
+
+    let project = loadFromStorage() || DEFAULT_PROJECT();
+    let dragState = null;
+    let toastTimer = null;
+
+    const el = id => document.getElementById(id);
+    const activePage = () => project.pages.find(p => p.id === project.activePageId) || project.pages[0];
+    const selectedElement = () => activePage().elements.find(item => item.id === project.selectedId) || null;
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const toNumber = (value, fallback = 0) => Number.isFinite(Number(value)) ? Number(value) : fallback;
+    const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;' }[char]));
+    const cppString = value => `"${String(value ?? '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\r?\n/g, ' ')}"`;
+    const cppId = value => String(value).replace(/[^a-zA-Z0-9_]/g, '_').replace(/^([^a-zA-Z_])/, '_$1');
+    const newId = type => `${type}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+    const color565 = hex => {
+      const clean = String(hex || '#000000').replace('#', '');
+      const r = parseInt(clean.slice(0, 2), 16) || 0, g = parseInt(clean.slice(2, 4), 16) || 0, b = parseInt(clean.slice(4, 6), 16) || 0;
+      return `0x${(((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3)).toString(16).toUpperCase().padStart(4, '0')}`;
+    };
+    const bytesToBase64 = bytes => { let text = ''; bytes.forEach(byte => text += String.fromCharCode(byte)); return btoa(text); };
+    const base64ToBytes = value => Uint8Array.from(atob(value || ''), char => char.charCodeAt(0));
+
+    async function fileToDataUrl(file) {
+      return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = () => resolve(reader.result); reader.onerror = reject; reader.readAsDataURL(file); });
+    }
+
+    async function convertImageToBitmap(file, item) {
+      const source = await fileToDataUrl(file);
+      const image = await new Promise((resolve, reject) => { const img = new Image(); img.onload = () => resolve(img); img.onerror = reject; img.src = source; });
+      const scale = Math.min(1, 320 / image.naturalWidth, 240 / image.naturalHeight);
+      const width = Math.max(1, Math.round(image.naturalWidth * scale));
+      const height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      context.drawImage(image, 0, 0, width, height);
+      const pixels = context.getImageData(0, 0, width, height).data;
+      const bytes = new Uint8Array(Math.ceil(width * height / 8));
+      const preview = context.createImageData(width, height);
+      for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+        const pixel = (y * width + x) * 4;
+        const dark = pixels[pixel + 3] > 20 && (pixels[pixel] * 0.299 + pixels[pixel + 1] * 0.587 + pixels[pixel + 2] * 0.114) < 128;
+        if (dark) {
+          bytes[y * Math.ceil(width / 8) + (x >> 3)] |= 0x80 >> (x & 7);
+          preview.data[pixel] = preview.data[pixel + 1] = preview.data[pixel + 2] = 255; preview.data[pixel + 3] = 255;
+        }
+      }
+      const previewCanvas = document.createElement('canvas'); previewCanvas.width = width; previewCanvas.height = height;
+      previewCanvas.getContext('2d').putImageData(preview, 0, 0);
+      item.w = width; item.h = height; item.sourceName = file.name; item.bitmapData = bytesToBase64(bytes); item.previewData = previewCanvas.toDataURL('image/png');
+    }
+
+    function chooseImageFile() {
+      return new Promise(resolve => { const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*'; input.addEventListener('change', () => resolve(input.files[0] || null), { once: true }); input.click(); });
+    }
+
+    function saveToStorage() { localStorage.setItem('cyd-ui-builder-project', JSON.stringify(project)); }
+    function loadFromStorage() { try { const raw = localStorage.getItem('cyd-ui-builder-project'); return raw ? normalizeProject(JSON.parse(raw)) : null; } catch { return null; } }
+    function normalizeProject(candidate) {
+      const fallback = DEFAULT_PROJECT();
+      if (!candidate || !Array.isArray(candidate.pages) || !candidate.pages.length) return fallback;
+      candidate.name ||= fallback.name;
+      candidate.settings = { ...fallback.settings, ...(candidate.settings || {}) };
+      candidate.pages = candidate.pages.map((page, index) => ({ id: page.id || `page_${index}`, name: page.name || `Seite ${index + 1}`, elements: Array.isArray(page.elements) ? page.elements.filter(item => ELEMENT_TYPES[item.type]) : [] }));
+      candidate.activePageId = candidate.pages.some(p => p.id === candidate.activePageId) ? candidate.activePageId : candidate.pages[0].id;
+      candidate.selectedId ||= null;
+      return candidate;
+    }
+
+    function render() {
+      project = normalizeProject(project);
+      el('project-name').value = project.name;
+      renderPalette(); renderPages(); renderDisplay(); renderInspector();
+      saveToStorage();
+    }
+
+    function renderPalette() {
+      el('palette').innerHTML = Object.entries(ELEMENT_TYPES).map(([type, spec]) => `
+        <button class="palette-item" type="button" draggable="true" data-type="${type}" aria-label="${spec.label} hinzufügen">
+          <span class="palette-symbol">${spec.icon}</span><span class="palette-label">${spec.label}</span>
+        </button>`).join('');
+      document.querySelectorAll('.palette-item').forEach(item => {
+        item.addEventListener('dragstart', event => { event.dataTransfer.setData('application/cyd-element', item.dataset.type); event.dataTransfer.effectAllowed = 'copy'; });
+        item.addEventListener('click', () => addElement(item.dataset.type, 20, 20));
+      });
+    }
+
+    function renderPages() {
+      el('page-count').textContent = `${project.pages.length} / 16`;
+      el('pages').innerHTML = project.pages.map(page => `<div class="page-row">
+        <button class="btn page-button ${page.id === project.activePageId ? 'active' : ''}" type="button" data-page="${page.id}">${escapeHtml(page.name)}</button>
+        ${project.pages.length > 1 ? `<button class="page-delete" type="button" data-delete-page="${page.id}" aria-label="${escapeHtml(page.name)} löschen">×</button>` : '<span></span>'}
+      </div>`).join('');
+      document.querySelectorAll('[data-page]').forEach(button => button.addEventListener('click', () => { project.activePageId = button.dataset.page; project.selectedId = null; render(); }));
+      document.querySelectorAll('[data-delete-page]').forEach(button => button.addEventListener('click', () => removePage(button.dataset.deletePage)));
+      el('active-page-caption').textContent = `Seite: ${activePage().name}`;
+      el('add-page').disabled = project.pages.length >= 16;
+    }
+
+    function elementPosition(item) {
+      const spec = ELEMENT_TYPES[item.type];
+      return spec.position ? spec.position(item) : { x: item.x, y: item.y };
+    }
+
+    function renderDisplay() {
+      const page = activePage();
+      const display = el('display');
+      display.classList.toggle('empty', page.elements.length === 0);
+      display.innerHTML = page.elements.map(item => {
+        const spec = ELEMENT_TYPES[item.type]; const position = elementPosition(item);
+        return `<div class="element ${item.id === project.selectedId ? 'selected' : ''}" data-element="${item.id}" style="left:${position.x / 5.5}%;top:${position.y / 4.5}%;">${spec.preview(item)}</div>`;
+      }).join('');
+      display.querySelectorAll('[data-element]').forEach(node => node.addEventListener('pointerdown', startMove));
+    }
+
+    function renderInspector() {
+      const inspector = el('inspector');
+      const selected = selectedElement();
+      if (!selected) {
+        inspector.innerHTML = `<p class="inspector-empty">Wähle ein Element auf dem Display aus. Die Eigenschaften werden hier bearbeitet.</p>${settingsMarkup()}`;
+        bindSettings(); return;
+      }
+      const spec = ELEMENT_TYPES[selected.type];
+      inspector.innerHTML = `<div class="prop-group"><div class="inspector-empty"><strong>${escapeHtml(spec.label)}</strong><br><span class="helper">ID: ${escapeHtml(selected.id)}</span></div>${fieldsMarkup(selected, spec.fields)}<hr class="divider"><p class="helper">Tipp: Das Element mit der Maus oder per Pfeiltasten verschieben.</p></div>`;
+      bindPropertyFields(selected, spec.fields);
+    }
+
+    function fieldsMarkup(item, fields) {
+      const primary = fields.filter(field => !['x', 'y', 'w', 'h'].includes(field.key));
+      const geometry = fields.filter(field => ['x', 'y', 'w', 'h'].includes(field.key));
+      const markup = group => group.map(field => propertyMarkup(item, field)).join('');
+      return `${primary.length ? `<div class="prop-group">${markup(primary)}</div>` : ''}${geometry.length ? `<div class="property-grid">${markup(geometry)}</div>` : ''}`;
+    }
+
+    function propertyMarkup(item, field) {
+      const value = item[field.key];
+      if (field.type === 'checkbox') return `<div class="property"><label><input type="checkbox" data-property="${field.key}" ${value ? 'checked' : ''}> ${field.label}</label></div>`;
+      if (field.type === 'file') return `<div class="property"><label for="prop-${field.key}">${field.label}</label><input id="prop-${field.key}" data-property="${field.key}" type="file" accept="${field.accept || ''}"><span class="helper">${escapeHtml(value || 'Keine Datei gewählt')} – wird als Schwarzweiß-Bitmap gespeichert.</span></div>`;
+      if (field.type === 'action') {
+        const options = [{ value: 'none', label: 'Keine Aktion' }, ...project.pages.map(page => ({ value: `page:${page.id}`, label: `Gehe zu: ${page.name}` }))];
+        return `<div class="property"><label for="prop-${field.key}">${field.label}</label><select id="prop-${field.key}" data-property="${field.key}">${options.map(option => `<option value="${option.value}" ${value === option.value ? 'selected' : ''}>${escapeHtml(option.label)}</option>`).join('')}</select></div>`;
+      }
+	  if (field.type === "textarea") {
+		return `
+		<div class="property">
+			<label>${field.label}</label>
+			<textarea
+				data-property="${field.key}"
+				rows="8"
+				style="width:100%;resize:vertical;font-family:monospace;"
+			>${escapeHtml(value)}</textarea>
+		</div>`;
+	  }
+		if(field.type==="select"){
+			return `
+			<div class="property">
+				<label>${field.label}</label>
+				<select data-property="${field.key}">
+					${field.options.map(o=>`
+						<option
+							value="${o[0]}"
+							${value===o[0]?"selected":""}>
+							${o[1]}
+						</option>
+					`).join("")}
+				</select>
+			</div>`;
+		}
+      return `<div class="property"><label for="prop-${field.key}">${field.label}</label><input id="prop-${field.key}" data-property="${field.key}" type="${field.type}" value="${escapeHtml(value)}" ${field.min !== undefined ? `min="${field.min}"` : ''} ${field.max !== undefined ? `max="${field.max}"` : ''}></div>`;
+    }
+
+    function settingsMarkup() {
+      const s = project.settings;
+      return `<hr class="divider"><details class="settings"><summary>ESP32- und Touch-Einstellungen</summary><div class="settings-content prop-group">
+        <div class="property-grid"><div class="property"><label>TFT CS</label><input data-setting="tftCS" type="number" value="${s.tftCS}"></div><div class="property"><label>TFT DC</label><input data-setting="tftDC" type="number" value="${s.tftDC}"></div><div class="property"><label>TFT RST</label><input data-setting="tftRST" type="number" value="${s.tftRST}"></div><div class="property"><label>Touch CS</label><input data-setting="touchCS" type="number" value="${s.touchCS}"></div></div>
+        <div class="property"><label>Display-Rotation</label><select data-setting="rotation"><option value="1" ${s.rotation == 1 ? 'selected' : ''}>1 — Querformat</option><option value="3" ${s.rotation == 3 ? 'selected' : ''}>3 — Querformat gedreht</option></select></div>
+        <div class="property-grid"><div class="property"><label>Touch X min.</label><input data-setting="touchMinX" type="number" value="${s.touchMinX}"></div><div class="property"><label>Touch X max.</label><input data-setting="touchMaxX" type="number" value="${s.touchMaxX}"></div><div class="property"><label>Touch Y min.</label><input data-setting="touchMinY" type="number" value="${s.touchMinY}"></div><div class="property"><label>Touch Y max.</label><input data-setting="touchMaxY" type="number" value="${s.touchMaxY}"></div></div>
+        <p class="helper">Die CYD-Pinwerte sind übliche Standardwerte. Touch-Min./Max. für dein Display kalibrieren, falls die Berührung versetzt ist.</p>
+      </div></details>`;
+    }
+
+    function bindPropertyFields(item, fields) {
+      document.querySelectorAll('[data-property]').forEach(input => input.addEventListener('input', () => {
+        const field = fields.find(candidate => candidate.key === input.dataset.property);
+        if (field.type === 'file') {
+          const file = input.files[0]; if (!file) return;
+          convertImageToBitmap(file, item).then(() => { render(); showToast('Bild als Schwarzweiß-Bitmap konvertiert.'); }).catch(() => showToast('Bilddatei konnte nicht gelesen werden.'));
+          return;
+        }
+        let value = input.type === 'checkbox' ? input.checked : input.value;
+        if (field.type === 'number') value = clamp(toNumber(value, item[field.key]), field.min ?? -9999, field.max ?? 9999);
+        // Der Inspector bleibt beim Tippen bestehen, damit das Eingabefeld seinen Fokus behält.
+        // Nur die Vorschau wird sofort erneuert; die Daten werden wie gewohnt gespeichert.
+        item[field.key] = value;
+        renderDisplay();
+        saveToStorage();
+      }));
+    }
+
+    function bindSettings() {
+      document.querySelectorAll('[data-setting]').forEach(input => input.addEventListener('input', () => { project.settings[input.dataset.setting] = toNumber(input.value, project.settings[input.dataset.setting]); saveToStorage(); }));
+    }
+
+    async function addElement(type, x, y) {
+      const spec = ELEMENT_TYPES[type]; if (!spec) return;
+      const item = { id: newId(type), type, ...structuredClone(spec.defaults), x: Math.round(clamp(x, 0, 319)), y: Math.round(clamp(y, 0, 239)) };
+      if (type === 'bitmap') {
+        const file = await chooseImageFile(); if (!file) return;
+        try { await convertImageToBitmap(file, item); } catch { showToast('Bilddatei konnte nicht gelesen werden.'); return; }
+      }
+      activePage().elements.push(item); project.selectedId = item.id; render();
+    }
+
+    function startMove(event) {
+      const node = event.currentTarget; const item = activePage().elements.find(candidate => candidate.id === node.dataset.element); if (!item) return;
+      event.preventDefault(); event.stopPropagation(); project.selectedId = item.id; render();
+      const display = el('display'), rect = display.getBoundingClientRect(), origin = elementPosition(item);
+      dragState = { id: item.id, originX: origin.x, originY: origin.y, clientX: event.clientX, clientY: event.clientY, rect, pointerId: event.pointerId };
+      document.addEventListener('pointermove', moveElement); document.addEventListener('pointerup', endMove, { once: true });
+    }
+
+    function moveElement(event) {
+      if (!dragState) return;
+      const item = activePage().elements.find(candidate => candidate.id === dragState.id); if (!item) return;
+      const dx = (event.clientX - dragState.clientX) * 320 / dragState.rect.width, dy = (event.clientY - dragState.clientY) * 240 / dragState.rect.height;
+      const spec = ELEMENT_TYPES[item.type];
+      if (spec.position) { item.x = Math.round(clamp(dragState.originX + dx + item.radius, 0, 319)); item.y = Math.round(clamp(dragState.originY + dy + item.radius, 0, 239)); }
+      else { item.x = Math.round(clamp(dragState.originX + dx, 0, 319)); item.y = Math.round(clamp(dragState.originY + dy, 0, 239)); }
+      renderDisplay(); el('coordinates').textContent = `Koordinaten: x ${item.x}, y ${item.y}`;
+    }
+    function endMove() { dragState = null; document.removeEventListener('pointermove', moveElement); render(); }
+
+    function removePage(id) {
+      const page = project.pages.find(candidate => candidate.id === id); if (!page || !confirm(`Seite „${page.name}“ löschen?`)) return;
+      project.pages = project.pages.filter(candidate => candidate.id !== id); project.activePageId = project.pages[0].id; project.selectedId = null; render();
+    }
+
+    function deleteSelected() { const page = activePage(); if (!project.selectedId) return; page.elements = page.elements.filter(item => item.id !== project.selectedId); project.selectedId = null; render(); }
+    function addPage() { if (project.pages.length >= 16) return; const name = prompt('Name der neuen Seite:', `Seite ${project.pages.length + 1}`); if (!name?.trim()) return; const page = { id: `page_${Date.now().toString(36)}`, name: name.trim().slice(0, 24), elements: [] }; project.pages.push(page); project.activePageId = page.id; project.selectedId = null; render(); }
+
+        function generateArduinoCode() {
+      const s = project.settings, pages = project.pages;
+      const allElements = pages.flatMap(page => page.elements);
+      const hasInput = allElements.some(item => item.type === 'input');
+      const hasListbox = allElements.some(item => item.type === 'listbox');
+      const hasScrollableText = allElements.some(item => item.type === 'scrollableText');
+      const hasMultilineText = allElements.some(item => item.type === 'multilineText');
+      const bitmapElements = allElements.filter(item => item.type === 'bitmap' && item.bitmapData);
+      const weatherElements = allElements.filter(item => item.type === 'weatherTemperature' || item.type === 'weatherRainChance');
+      const hasWeather = weatherElements.length > 0;
+      const variableIntNames = new Set(allElements.filter(item => item.type === 'variableInt').map(item => cppId(item.text)));
+      const bitmapDeclarations = bitmapElements.map(item => {
+        const bytes = [...base64ToBytes(item.bitmapData)].map(byte => `0x${byte.toString(16).toUpperCase().padStart(2, '0')}`);
+        return `const uint8_t ${cppId(item.id)}_data[] PROGMEM = {${bytes.join(', ')}};`;
+      }).join('\n');
+      const weatherStateDeclarations = weatherElements.flatMap(item => {
+        const variable = cppId(item.variable);
+        return [variableIntNames.has(variable) ? '' : `volatile int ${variable} = 0;`, `unsigned long weatherTimer_${cppId(item.id)} = 0;`];
+      }).filter(Boolean);
+      const weatherUpdates = weatherElements.map(item => {
+        const variable = cppId(item.variable), timer = `weatherTimer_${cppId(item.id)}`;
+        if (item.type === 'weatherTemperature') {
+          const day = { today: 0, tomorrow: 1, dayAfterTomorrow: 2 }[item.day] ?? 0;
+          return `if (force || millis() - ${timer} >= ${item.intervalMs}) { ${timer} = millis(); ${variable} = getDailyWeatherValue(${day}, ${item.mode === 'max' ? 'true' : 'false'}, false); }`;
+        }
+        if (item.range === 'next5Days') return `if (force || millis() - ${timer} >= ${item.intervalMs}) { ${timer} = millis(); ${variable} = getRainChanceNext5Days(); }`;
+        const day = item.range === 'tomorrow' ? 1 : 0;
+        return `if (force || millis() - ${timer} >= ${item.intervalMs}) { ${timer} = millis(); ${variable} = getDailyWeatherValue(${day}, false, true); }`;
+      }).join('\n  ');
+      const weatherSetupCode = weatherElements.map(item => {
+        const variable = cppId(item.variable), timer = `weatherTimer_${cppId(item.id)}`;
+        if (item.type === 'weatherTemperature') {
+          const day = { today: 0, tomorrow: 1, dayAfterTomorrow: 2 }[item.day] ?? 0;
+          return `${variable} = getDailyWeatherValue(${day}, ${item.mode === 'max' ? 'true' : 'false'}, false); ${timer} = millis();`;
+        }
+        if (item.range === 'next5Days') return `${variable} = getRainChanceNext5Days(); ${timer} = millis();`;
+        return `${variable} = getDailyWeatherValue(${item.range === 'tomorrow' ? 1 : 0}, false, true); ${timer} = millis();`;
+      }).join('\n  ');
+      const weatherBlock = hasWeather ? `
+int getDailyWeatherValue(uint8_t dayIndex, bool maximum, bool rainChance) {
+  if (WiFi.status() != WL_CONNECTED) return 0;
+  HTTPClient http;
+  String url = "https://api.open-meteo.com/v1/forecast?latitude=" + String(latitude, 4) + "&longitude=" + String(longitude, 4) + "&daily=temperature_2m_min,temperature_2m_max,precipitation_probability_max&timezone=auto";
+  http.begin(url); int httpCode = http.GET();
+  if (httpCode != 200) { http.end(); return 0; }
+  JsonDocument doc; DeserializationError error = deserializeJson(doc, http.getString()); http.end();
+  if (error || dayIndex >= 7) return 0;
+  if (rainChance) return (int)round(doc["daily"]["precipitation_probability_max"][dayIndex] | 0);
+  return (int)round(doc["daily"][maximum ? "temperature_2m_max" : "temperature_2m_min"][dayIndex] | 0.0);
+}
+
+int getRainChanceNext5Days() {
+  int result = 0;
+  for (uint8_t day = 0; day < 5; day++) result = max(result, getDailyWeatherValue(day, false, true));
+  return result;
+}
+
+void updateSpecialWeather(bool force = false) {
+  ${weatherUpdates}
+}
+` : '';
+
+      // Kontext-Objekt für die Arduino-Code-Generierung
+      const ctx = {
+        onPageLoad: [],
+        globalDeclarations: [],
+        setupCode: [],
+        loopCode: []
+      };
+      if (hasWeather) {
+        ctx.setupCode.push('resolveCity(cityName);\n  ' + weatherSetupCode + '\n  updateSpecialWeather(true);');
+        ctx.loopCode.push('updateSpecialWeather();');
+      }
+
+      const pageEnum = pages.map(page => `  PAGE_${cppId(page.id).toUpperCase()}`).join(',\n');
+      
+      // Zuerst alle Elemente durchgehen, um ctx zu füllen (für arduino() Aufrufe)
+      // Wir machen das in zwei Schritten: erst ctx füllen, dann den Rest generieren.
+      pages.forEach(page => {
+        page.elements.forEach(item => {
+          ELEMENT_TYPES[item.type].arduino(item, ctx);
+        });
+      });
+
+      const stateDeclarations = [...new Set([
+        ...allElements.flatMap(item => {
+          switch (item.type) {
+            case "checkbox":
+              return `volatile bool ${cppId(item.variable)} = ${item.checked ? "true" : "false"};`;
+            case "variableInt":
+              return `volatile int ${cppId(item.text)} = ${item.size};`;
+            case "variableChar":
+              return `char ${cppId(item.text)}[${item.maxLength || 32}] = "${item.size}";`;
+            case "variableBool":
+              return `volatile bool ${cppId(item.text)} = ${item.size == 0 ? "false" : "true"};`;
+            case "input":
+              return `char ${cppId(item.variable)}[${item.maxLength || 32}] = "";`;
+            case "codeExecutor":
+              return `unsigned long ${cppId(item.varName)} = 0;`;
+            case "listbox": {
+              const rows = String(item.items).split('\n').filter(line => line.trim() !== '');
+              return [
+                `const char* ${cppId(item.variable)}_items[] = {${rows.map(row => cppString(row)).join(', ')}};`,
+                `const int ${cppId(item.variable)}_itemCount = ${rows.length};`,
+                `volatile int ${cppId(item.variable)} = ${clamp(item.selectedIndex || 0, 0, Math.max(0, rows.length - 1))};`
+              ];
+            }
+            case "scrollableText": {
+              const rows = String(item.text).split('\n');
+              return [
+                `const char* ${cppId(item.variable)}_lines[] = {${rows.map(row => cppString(row)).join(', ')}};`,
+                `const int ${cppId(item.variable)}_lineCount = ${rows.length};`,
+                `volatile int ${cppId(item.variable)} = 0;`
+              ];
+            }
+            default:
+              return [];
+          }
+        }),
+        ...ctx.globalDeclarations,
+        ...(bitmapDeclarations ? [bitmapDeclarations] : []),
+        ...weatherStateDeclarations,
+        // Touch-System (Tippen & Wischen)
+        "int16_t touchStartX = 0;",
+        "int16_t touchStartY = 0;",
+        "int16_t touchLastX = 0;",
+        "int16_t touchLastY = 0;",
+        "bool touchActive = false;",
+        ...(hasInput ? ["bool keyboardActive = false;", "char* keyboardTarget = nullptr;", "uint8_t keyboardTargetSize = 0;"] : [])
+      ])].join("\n");
+
+      // Jetzt die Seitenfunktionen generieren (arduino() nochmal aufrufen, aber ctx ist schon gefüllt)
+      const pageFunctions = pages.map(page => `void drawPage_${cppId(page.id)}() {\n${page.elements.map(item => `  ${ELEMENT_TYPES[item.type].arduino(item, ctx)}`).join('\n') || '  // Diese Seite ist noch leer.'}\n}`).join('\n\n');
+      const drawSwitch = pages.map(page => `    case PAGE_${cppId(page.id).toUpperCase()}: drawPage_${cppId(page.id)}(); break;`).join('\n');
+      const touchCases = pages.map(page => {
+        const lines = page.elements.filter(item => ELEMENT_TYPES[item.type].touch).map(item => touchSnippet(item));
+        return `    case PAGE_${cppId(page.id).toUpperCase()}:\n${lines.length ? `${lines.map(line => `      ${line}`).join('\n')}\n      break;` : '      break;'}`;
+      }).join('\n');
+
+      const handleTouchFunction = `void handleTouch(int16_t startX, int16_t startY, int16_t endX, int16_t endY) {
+  int16_t dx = endX - startX;
+  int16_t dy = endY - startY;
+
+  bool tap = abs(dx) < 15 && abs(dy) < 15;
+  bool swipeLeft = dx < -30 && abs(dx) > abs(dy);
+  bool swipeRight = dx > 30 && abs(dx) > abs(dy);
+  bool swipeUp = dy < -30 && abs(dy) > abs(dx);
+  bool swipeDown = dy > 30 && abs(dy) > abs(dx);
+${hasInput ? `
+  if (keyboardActive) {
+    if (!tap) return;
+    handleKeyboardTouch(endX, endY);
+    return;
+  }
+` : ''}
+  switch (currentPage) {
+${touchCases}
+  }
+}`;
+
+      const keyboardBlock = hasInput ? `
+const char* kbRows[4] = {"1234567890", "qwertyuiop", "asdfghjkl", "zxcvbnm"};
+
+void openKeyboard(char* target, uint8_t targetSize) {
+  keyboardActive = true;
+  keyboardTarget = target;
+  keyboardTargetSize = targetSize;
+  drawKeyboard();
+}
+
+void drawKeyboard() {
+  tft.fillRect(0, 96, 320, 144, ILI9341_NAVY);
+  int16_t rowY = 98;
+  for (uint8_t r = 0; r < 4; r++) {
+    const char* row = kbRows[r];
+    uint8_t len = strlen(row);
+    int16_t keyW = 320 / len;
+    for (uint8_t i = 0; i < len; i++) {
+      tft.drawRect(i * keyW, rowY, keyW, 22, ILI9341_WHITE);
+      tft.setTextColor(ILI9341_WHITE);
+      tft.setTextSize(1);
+      tft.setCursor(i * keyW + keyW / 2 - 3, rowY + 7);
+      tft.print(row[i]);
+    }
+    rowY += 24;
+  }
+  tft.drawRect(0, rowY, 90, 22, ILI9341_WHITE);
+  tft.setTextColor(ILI9341_WHITE);
+  tft.setCursor(24, rowY + 7); tft.print("<-");
+  tft.drawRect(90, rowY, 140, 22, ILI9341_WHITE);
+  tft.setCursor(142, rowY + 7); tft.print("LEER");
+  tft.drawRect(230, rowY, 90, 22, ILI9341_WHITE);
+  tft.setCursor(258, rowY + 7); tft.print("OK");
+}
+
+void handleKeyboardTouch(int16_t x, int16_t y) {
+  int16_t rowY = 98;
+  for (uint8_t r = 0; r < 4; r++) {
+    const char* row = kbRows[r];
+    uint8_t len = strlen(row);
+    int16_t keyW = 320 / len;
+    if (y >= rowY && y < rowY + 22) {
+      uint8_t i = x / keyW;
+      if (i < len) {
+        uint8_t pos = strlen(keyboardTarget);
+        if (pos < keyboardTargetSize - 1) {
+          keyboardTarget[pos] = row[i];
+          keyboardTarget[pos + 1] = '\\0';
+        }
+      }
+      drawKeyboard();
+      return;
+    }
+    rowY += 24;
+  }
+  if (y >= rowY && y < rowY + 22) {
+    if (x < 90) {
+      uint8_t pos = strlen(keyboardTarget);
+      if (pos > 0) keyboardTarget[pos - 1] = '\\0';
+    } else if (x < 230) {
+      uint8_t pos = strlen(keyboardTarget);
+      if (pos < keyboardTargetSize - 1) {
+        keyboardTarget[pos] = ' ';
+        keyboardTarget[pos + 1] = '\\0';
+      }
+    } else {
+      keyboardActive = false;
+      drawCurrentPage();
+      return;
+    }
+  }
+  drawKeyboard();
+}
+` : '';
+
+      const inputBlock = hasInput ? `
+void drawInputField(int16_t x, int16_t y, int16_t w, int16_t h, const char *value, const char *placeholder, uint16_t bg, uint16_t color) {
+  tft.fillRect(x, y, w, h, bg);
+  tft.drawRect(x, y, w, h, ILI9341_WHITE);
+  tft.setTextSize(1);
+  tft.setCursor(x + 4, y + h / 2 - 4);
+  if (strlen(value) > 0) {
+    tft.setTextColor(color);
+    tft.print(value);
+  } else {
+    tft.setTextColor(0x7BEF);
+    tft.print(placeholder);
+  }
+}
+` : '';
+
+      const listboxBlock = hasListbox ? `
+void drawListbox(int16_t x, int16_t y, int16_t w, int16_t h, int16_t rowHeight, const char **items, int itemCount, int selectedIndex, uint16_t bg, uint16_t color, uint16_t selectedColor) {
+  tft.fillRect(x, y, w, h, bg);
+  tft.drawRect(x, y, w, h, ILI9341_WHITE);
+  tft.setTextSize(1);
+  for (int i = 0; i < itemCount; i++) {
+    int16_t rowY = y + i * rowHeight;
+    if (rowY + rowHeight > y + h) break;
+    if (i == selectedIndex) tft.fillRect(x + 1, rowY, w - 2, rowHeight, 0x18E3);
+    tft.setTextColor(i == selectedIndex ? selectedColor : color);
+    tft.setCursor(x + 4, rowY + rowHeight / 2 - 4);
+    tft.print(items[i]);
+  }
+}
+` : '';
+
+      const scrollableTextBlock = hasScrollableText ? `
+void drawScrollableText(int16_t x, int16_t y, int16_t w, int16_t h, const char **lines, int lineCount, int16_t lineHeight, int offset, uint16_t bg, uint16_t color) {
+  tft.fillRect(x, y, w, h, bg);
+  tft.drawRect(x, y, w, h, ILI9341_WHITE);
+  tft.setTextSize(1);
+  tft.setTextColor(color);
+  int16_t maxLines = h / lineHeight;
+  for (int16_t i = 0; i < maxLines; i++) {
+    int lineIndex = offset + i;
+    if (lineIndex >= lineCount) break;
+    tft.setCursor(x + 3, y + i * lineHeight + 2);
+    tft.print(lines[lineIndex]);
+  }
+}
+` : '';
+
+      const multilineTextBlock = hasMultilineText ? `
+void drawMultilineText(int16_t x, int16_t y, int16_t w, const char *text, uint16_t color, uint8_t size, uint8_t lineSpacing) {
+  tft.setTextColor(color);
+  tft.setTextSize(size);
+  int16_t charW = 6 * size;
+  int16_t lineH = 8 * size + lineSpacing;
+  int16_t maxChars = max((int16_t)1, (int16_t)(w / charW));
+  char buffer[161];
+  int16_t cursorY = y;
+  int16_t len = strlen(text);
+  int16_t pos = 0;
+  while (pos < len) {
+    int16_t lineLen = 0;
+    int16_t lastSpace = -1;
+    while (pos + lineLen < len && lineLen < maxChars && text[pos + lineLen] != '\\n') {
+      if (text[pos + lineLen] == ' ') lastSpace = lineLen;
+      lineLen++;
+    }
+    bool brokeOnNewline = (pos + lineLen < len && text[pos + lineLen] == '\\n');
+    if (!brokeOnNewline && pos + lineLen < len && lastSpace >= 0) lineLen = lastSpace;
+    int16_t copyLen = min(lineLen, (int16_t)(sizeof(buffer) - 1));
+    strncpy(buffer, text + pos, copyLen);
+    buffer[copyLen] = '\\0';
+    tft.setCursor(x, cursorY);
+    tft.print(buffer);
+    cursorY += lineH;
+    pos += lineLen;
+    if (pos < len && (text[pos] == '\\n' || text[pos] == ' ')) pos++;
+  }
+}
+` : '';
+	const newTouchCallibration = `
+int16_t x = map(p.y, 200, 3800, tft.width() - 1, 0);
+
+// p.x wird direkt auf die Y-Achse des Displays gelegt
+int16_t y = map(p.x, 200, 3800, 0, tft.height() - 1);
+
+// Begrenzung auf die Display-Pixel (320x240)
+x = constrain(x, 0, tft.width() - 1);
+y = constrain(y, 0, tft.height() - 1);
+int afgf = y ;
+int bfgf = x ;
+x = 320 - bfgf;
+x = x + (0.05*x);
+y = 240 - afgf + 4;
+if (developerMode) {
+tft.fillCircle(x, y, 3, ILI9341_RED);
+}
+	`;
+	const wlanIncludes = `
+#ifndef ILI9341_GRAY
+#define ILI9341_GRAY 0x8410
+#endif
+#include <WiFiClientSecure.h>
+#include "driver/i2s.h"
+
+#define TTS_SAMPLE_RATE 16000
+
+void initSpeaker() {
+  i2s_driver_uninstall(I2S_NUM_0);
+
+  i2s_config_t i2s_config = {
+    .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_TX | I2S_MODE_DAC_BUILT_IN),
+    .sample_rate = TTS_SAMPLE_RATE,
+    .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
+    .channel_format = I2S_CHANNEL_FMT_ONLY_RIGHT,
+    .communication_format = I2S_COMM_FORMAT_STAND_MSB,
+    .intr_alloc_flags = 0,
+    .dma_buf_count = 8,
+    .dma_buf_len = 256,
+    .use_apll = false
+  };
+
+  esp_err_t err = i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL);
+  if (err != ESP_OK) {
+    Serial.printf("I2S Install fehlgeschlagen, Fehlercode: %d\\n", err);
+    return;
+  }
+
+  // WICHTIG: i2s_set_pin(NULL) NICHT aufrufen -- das würde auch GPIO25 (Touch T_CLK) belegen.
+  // i2s_set_dac_mode allein aktiviert gezielt nur GPIO26.
+  i2s_set_dac_mode(I2S_DAC_CHANNEL_RIGHT_EN);
+
+  Serial.println("I2S-Speaker erfolgreich initialisiert.");
+}
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
+volatile bool developerMode = false;
+#include "driver/adc.h"
+#include "esp_adc_cal.h"
+
+#define MIC_ADC_CHANNEL ADC1_CHANNEL_7  // entspricht GPIO27
+#define SAMPLE_RATE 8000
+#define RECORD_SECONDS 5
+#define NUM_SAMPLES (SAMPLE_RATE * RECORD_SECONDS)
+
+int16_t* audioBuffer = nullptr;  // wird zur Laufzeit alloziert
+size_t audioBufferLen = 0;
+void initMicADC() {
+  adc1_config_width(ADC_WIDTH_BIT_12);
+  adc1_config_channel_atten(MIC_ADC_CHANNEL, ADC_ATTEN_DB_12); // 0-3.3V Bereich
+}
+bool recordAudio() {
+  const size_t bufferBytes = NUM_SAMPLES * sizeof(int16_t);
+
+  // Vorher aufräumen, falls schon was allokiert war
+  if (audioBuffer != nullptr) {
+    free(audioBuffer);
+    audioBuffer = nullptr;
+  }
+
+  audioBuffer = (int16_t*) malloc(bufferBytes);
+  if (audioBuffer == nullptr) {
+    Serial.println("Fehler: Kein RAM für Audio-Buffer frei!");
+    return false;
+  }
+
+  Serial.println("Aufnahme läuft...");
+  const uint32_t sampleIntervalUs = 1000000UL / SAMPLE_RATE;
+
+  for (int i = 0; i < NUM_SAMPLES; i++) {
+    uint32_t start = micros();
+
+    int raw = adc1_get_raw(MIC_ADC_CHANNEL);       // 0-4095
+    audioBuffer[i] = (int16_t)((raw - 2048) * 16);  // zentrieren + auf 16-bit skalieren
+
+    // Auf exakten Sample-Takt warten
+    while (micros() - start < sampleIntervalUs) {
+      // busy-wait für stabiles Timing
+    }
+  }
+
+  audioBufferLen = bufferBytes;
+  Serial.println("Aufnahme fertig.");
+  return true;
+}
+uint8_t* buildWavFile(size_t &outLen) {
+  const uint32_t dataSize = audioBufferLen;
+  const uint32_t fileSize = 36 + dataSize;
+  outLen = 44 + dataSize;
+
+  uint8_t* wav = (uint8_t*) malloc(outLen);
+  if (wav == nullptr) return nullptr;
+
+  uint8_t header[44] = {
+    'R','I','F','F', 0,0,0,0, 'W','A','V','E',
+    'f','m','t',' ', 16,0,0,0,       // Subchunk1Size
+    1,0,                             // AudioFormat = PCM
+    1,0,                             // NumChannels = mono
+    0,0,0,0,                         // SampleRate (wird unten gesetzt)
+    0,0,0,0,                         // ByteRate
+    2,0,                             // BlockAlign
+    16,0,                            // BitsPerSample
+    'd','a','t','a', 0,0,0,0         // Subchunk2Size
+  };
+
+  *(uint32_t*)(header + 4)  = fileSize;
+  *(uint32_t*)(header + 24) = SAMPLE_RATE;
+  *(uint32_t*)(header + 28) = SAMPLE_RATE * 2; // ByteRate = SampleRate * NumChannels * BitsPerSample/8
+  *(uint32_t*)(header + 40) = dataSize;
+
+  memcpy(wav, header, 44);
+  memcpy(wav + 44, audioBuffer, dataSize);
+
+  return wav;
+}
+String sendToGroqSTT(const char* apiKey) {
+  size_t wavLen;
+  uint8_t* wavData = buildWavFile(wavLen);
+  if (wavData == nullptr) {
+    return "FEHLER: Konnte WAV nicht bauen";
+  }
+
+  HTTPClient http;
+  http.begin("https://api.groq.com/openai/v1/audio/transcriptions");
+  http.addHeader("Authorization", String("Bearer ") + apiKey);
+
+  String boundary = "----ESP32Boundary";
+  String header = "--" + boundary + "\\r\\n"
+    "Content-Disposition: form-data; name=\\\"model\\\"\\r\\n\\r\\n"
+    "whisper-large-v3-turbo\\r\\n"
+    "--" + boundary + "\\r\\n"
+    "Content-Disposition: form-data; name=\\\"file\\\"; filename=\\\"audio.wav\\\"\\r\\n"
+    "Content-Type: audio/wav\\r\\n\\r\\n";
+  String footer = "\\r\\n--" + boundary + "--\\r\\n";
+
+  size_t totalLen = header.length() + wavLen + footer.length();
+  uint8_t* body = (uint8_t*) malloc(totalLen);
+  if (body == nullptr) {
+    free(wavData);
+    return "FEHLER: Kein RAM fürs HTTP-Body";
+  }
+
+  size_t pos = 0;
+  memcpy(body + pos, header.c_str(), header.length()); pos += header.length();
+  memcpy(body + pos, wavData, wavLen); pos += wavLen;
+  memcpy(body + pos, footer.c_str(), footer.length()); pos += footer.length();
+
+  http.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+  int httpCode = http.POST(body, totalLen);
+
+  String result;
+  if (httpCode == 200) {
+    result = http.getString();
+  } else {
+    result = "FEHLER: HTTP " + String(httpCode) + " - " + http.getString();
+  }
+
+  free(wavData);
+  free(body);
+  http.end();
+  return result;
+}
+void freeAudioBuffer() {
+  if (audioBuffer != nullptr) {
+    free(audioBuffer);
+    audioBuffer = nullptr;
+    audioBufferLen = 0;
+  }
+}
+// WLAN-Zugangsdaten
+const char* ssid = "EasyBox-280186";
+const char* password = "QKKFcNrmdzMmLSkU";
+// Koordinaten (Standard: Stuttgart) - anpassen falls gewünscht
+// Statt fester Koordinaten:
+const char* cityName = "Zwickau";
+#include <WiFiClientSecure.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
+
+#define GROQ_RESPONSE_BUFFER_SIZE 256
+char groqResponseBuffer[GROQ_RESPONSE_BUFFER_SIZE];
+
+char* askGroq(const char* apiKey, const char* question, const char* sysprompt) {
+  WiFiClientSecure client;
+  client.setInsecure(); // Für Produktivbetrieb besser Root-CA setzen
+
+  HTTPClient https;
+  strcpy(groqResponseBuffer, ""); // Buffer zurücksetzen
+
+  if (https.begin(client, "https://api.groq.com/openai/v1/chat/completions")) {
+    https.addHeader("Content-Type", "application/json");
+    https.addHeader("Authorization", String("Bearer ") + apiKey);
+
+    JsonDocument doc;
+    doc["model"] = "llama-3.3-70b-versatile";
+    JsonArray messages = doc["messages"].to<JsonArray>();
+	
+	    // Systemprompt hinzufügen
+    JsonObject systemMsg = messages.add<JsonObject>();
+    systemMsg["role"] = "system";
+    systemMsg["content"] = sysprompt;
+    JsonObject msg = messages.add<JsonObject>();
+    msg["role"] = "user";
+    msg["content"] = question;
+
+    String requestBody;
+    serializeJson(doc, requestBody);
+
+    int httpCode = https.POST(requestBody);
+
+    if (httpCode == HTTP_CODE_OK) {
+      String payload = https.getString();
+
+      JsonDocument responseDoc;
+      DeserializationError error = deserializeJson(responseDoc, payload);
+
+      if (!error) {
+        const char* content = responseDoc["choices"][0]["message"]["content"];
+        strncpy(groqResponseBuffer, content, GROQ_RESPONSE_BUFFER_SIZE - 1);
+        groqResponseBuffer[GROQ_RESPONSE_BUFFER_SIZE - 1] = '\\0';
+      } else {
+        strcpy(groqResponseBuffer, "Fehler beim Parsen der Antwort");
+        Serial.println(error.c_str());
+      }
+    } else {
+      snprintf(groqResponseBuffer, GROQ_RESPONSE_BUFFER_SIZE, "HTTP-Fehler: %d", httpCode);
+      Serial.println(https.getString());
+    }
+
+    https.end();
+  } else {
+    strcpy(groqResponseBuffer, "Verbindung zu Groq fehlgeschlagen");
+  }
+
+  return groqResponseBuffer;
+}
+float latitude = 0.0;
+float longitude = 0.0;
+bool resolveCity(const char* city) {
+  HTTPClient http;
+  String url = "https://geocoding-api.open-meteo.com/v1/search?name=" + String(city) + "&count=1&language=de";
+  http.begin(url);
+  int httpCode = http.GET();
+
+  bool success = false;
+  if (httpCode == 200) {
+    String payload = http.getString();
+    JsonDocument doc;
+    DeserializationError error = deserializeJson(doc, payload);
+
+    if (!error && doc["results"][0]["latitude"].is<float>()) {
+      latitude = doc["results"][0]["latitude"];
+      longitude = doc["results"][0]["longitude"];
+      Serial.println("Stadt gefunden: " + String(city) 
+                      + " (" + String(latitude, 4) + ", " + String(longitude, 4) + ")");
+      success = true;
+    } else {
+      Serial.println("Stadt nicht gefunden!");
+    }
+  } else {
+    Serial.print("Geocoding HTTP-Fehler: ");
+    Serial.println(httpCode);
+  }
+
+  http.end();
+  return success;
+}
+// Abfrageintervall in Millisekunden
+const unsigned long interval = 60000; // alle 60 Sekunden
+unsigned long previousMillis = 0;
+
+void getWeather(volatile int &targetTemp, volatile int &targetHum) {
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("WLAN nicht verbunden!");
+    return;
+  }
+
+  HTTPClient http;
+  String url = "https://api.open-meteo.com/v1/forecast?latitude=" + String(latitude, 4)
+              + "&longitude=" + String(longitude, 4)
+              + "&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code";
+
+  http.begin(url);
+  int httpCode = http.GET();
+
+  if (httpCode == 200) {
+    String payload = http.getString();
+
+    JsonDocument doc; // ArduinoJson v7
+    DeserializationError error = deserializeJson(doc, payload);
+
+    if (!error) {
+      float temp = doc["current"]["temperature_2m"];
+      int humidity = doc["current"]["relative_humidity_2m"];
+      float wind = doc["current"]["wind_speed_10m"];
+      int weatherCode = doc["current"]["weather_code"];
+	  targetHum = humidity;
+	  targetTemp = (int)temp;
+
+      Serial.println("---- Aktuelles Wetter ----");
+      Serial.print("Temperatur: "); Serial.print(temp); Serial.println(" °C");
+      Serial.print("Luftfeuchtigkeit: "); Serial.print(humidity); Serial.println(" %");
+      Serial.print("Windgeschwindigkeit: "); Serial.print(wind); Serial.println(" km/h");
+      Serial.print("Wettercode: "); Serial.println(weatherCode);
+      Serial.println("---------------------------");
+    } else {
+      Serial.print("JSON-Fehler: ");
+      Serial.println(error.c_str());
+    }
+  } else {
+    Serial.print("HTTP-Fehler: ");
+    Serial.println(httpCode);
+  }
+
+  http.end();
+}
+int getDailyWeatherValue(uint8_t dayIndex, bool maximum, bool rainChance) {
+  if (WiFi.status() != WL_CONNECTED || dayIndex >= 7) return 0;
+  HTTPClient http;
+  String url = "https://api.open-meteo.com/v1/forecast?latitude=" + String(latitude, 4) + "&longitude=" + String(longitude, 4) + "&daily=temperature_2m_min,temperature_2m_max,precipitation_probability_max&timezone=auto";
+  http.begin(url);
+  int httpCode = http.GET();
+  if (httpCode != 200) { http.end(); return 0; }
+  JsonDocument doc;
+  DeserializationError error = deserializeJson(doc, http.getString());
+  http.end();
+  if (error) return 0;
+  if (rainChance) return (int)round(doc["daily"]["precipitation_probability_max"][dayIndex] | 0);
+  return (int)round(doc["daily"][maximum ? "temperature_2m_max" : "temperature_2m_min"][dayIndex] | 0.0);
+}
+int getRainChanceNext5Days() {
+  int result = 0;
+  for (uint8_t day = 0; day < 5; day++) result = max(result, getDailyWeatherValue(day, false, true));
+  return result;
+}
+bool textToSpeech(const String &text) {
+  WiFiClientSecure client;
+  client.setInsecure();
+
+  if (!client.connect("api.elevenlabs.io", 443)) {
+    Serial.println("FEHLER: Verbindung zu ElevenLabs fehlgeschlagen");
+    return false;
+  }
+
+  // Anführungszeichen/Backslashes im Text escapen, sonst kaputtes JSON
+  String safeText = text;
+  safeText.replace("\\\\", "\\\\\\\\");
+  safeText.replace("\\\"", "\\\\\\\"");
+
+  String jsonBody = "{\\\"text\\\":\\\"" + safeText + "\\\",\\\"model_id\\\":\\\"eleven_multilingual_v2\\\"}";
+
+  String voiceId = "21m00Tcm4TlvDq8ikWAM";  // austauschbar gegen eine andere ElevenLabs-Stimme
+  String path = "/v1/text-to-speech/" + voiceId + "?output_format=pcm_16000";
+
+  client.print("POST " + path + " HTTP/1.1\\r\\n");
+  client.print("Host: api.elevenlabs.io\\r\\n");
+  client.print("xi-api-key: sk_1731da587d5e576445d01d32665f8fe7cd1399e3b097329c\\r\\n");
+  client.print("Content-Type: application/json\\r\\n");
+  client.print("Content-Length: " + String(jsonBody.length()) + "\\r\\n");
+  client.print("Connection: close\\r\\n\\r\\n");
+  client.print(jsonBody);
+
+  // Auf Antwort warten
+  unsigned long timeout = millis();
+  while (client.connected() && !client.available()) {
+    if (millis() - timeout > 15000) {
+      Serial.println("FEHLER: Timeout beim Warten auf Antwort");
+      client.stop();
+      return false;
+    }
+  }
+
+  // HTTP-Header überspringen (bis zur Leerzeile)
+  bool headersDone = false;
+  while (client.connected() || client.available()) {
+    if (client.available()) {
+      String line = client.readStringUntil('\\n');
+      if (line == "\\r") { headersDone = true; break; }
+    }
+  }
+  if (!headersDone) {
+    Serial.println("FEHLER: Keine gültige Antwort erhalten");
+    client.stop();
+    return false;
+  }
+
+  // Ab hier kommen rohe PCM-Daten -- häppchenweise direkt an den DAC weiterreichen
+  uint8_t chunk[512];
+  size_t bytesWritten;
+  while (client.connected() || client.available()) {
+    if (client.available()) {
+      int len = client.read(chunk, sizeof(chunk));
+      if (len > 0) {
+        i2s_write(I2S_NUM_0, chunk, len, &bytesWritten, portMAX_DELAY);
+      }
+    }
+  }
+
+  client.stop();
+  return true;
+}
+	`;
+      return `/*\n  ${project.name}\n   Erstellt mit CYD UI Builder\n  Bibliotheken installieren: Adafruit GFX Library, Adafruit ILI9341, XPT2046_Touchscreen\n*/\n#include <SPI.h>\n#include <Adafruit_GFX.h>\n#include <Adafruit_ILI9341.h>\n#include <XPT2046_Touchscreen.h>\n\n// Häufige Cheap-Yellow-Display-Pins — bei abweichender Hardware im Builder ändern.\n#define TFT_CS    15\n#define TFT_DC    2\n#define TFT_RST   ${s.tftRST}\n#define TOUCH_CS  ${s.touchCS}\n#define XPT2046_IRQ 36\n#define XPT2046_MOSI 32\n#define XPT2046_MISO 39\n#define XPT2046_CLK 25\n#define XPT2046_CS 33\n\nAdafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC, -1);\nSPIClass touchscreenSPI = SPIClass(VSPI);\nXPT2046_Touchscreen ts(XPT2046_CS, XPT2046_IRQ);\n\nenum PageId {\n${pageEnum}\n};\nPageId currentPage = PAGE_${cppId(pages[0].id).toUpperCase()};\n${stateDeclarations ? `\n${stateDeclarations}\n` : ''}\n${wlanIncludes}\nvoid drawText(int16_t x, int16_t y, const char *text, uint16_t color, uint8_t size) {\n  tft.setCursor(x, y);\n  tft.setTextColor(color);\n  tft.setTextSize(size);\n  tft.print(text);\n}\n\nvoid drawButton(int16_t x, int16_t y, int16_t w, int16_t h, int16_t radius, uint16_t fill, uint16_t textColor, const char *text) {\n  tft.fillRoundRect(x, y, w, h, radius, fill);\n  tft.drawRoundRect(x, y, w, h, radius, ILI9341_WHITE);\n  tft.setTextSize(2);\n  tft.setTextColor(textColor);\n  int16_t tx = x + (w - strlen(text) * 12) / 2;\n  int16_t ty = y + (h - 16) / 2;\n  tft.setCursor(tx, ty);\n  tft.print(text);\n}\n\nvoid drawProgress(int16_t x, int16_t y, int16_t w, int16_t h, uint8_t value, uint16_t color, uint16_t background) {\n  tft.fillRect(x, y, w, h, background);\n  tft.fillRect(x, y, (w * constrain(value, 0, 100)) / 100, h, color);\n  tft.drawRect(x, y, w, h, color);\n}\n\nvoid drawCheckbox(int16_t x, int16_t y, bool checked, uint16_t color, uint8_t size, const char *label) {\n  tft.drawRect(x, y, 14, 14, color);\n  if (checked) { tft.drawLine(x + 3, y + 7, x + 6, y + 11, color); tft.drawLine(x + 6, y + 11, x + 12, y + 3, color); }\n  drawText(x + 20, y, label, color, size);\n}\n${inputBlock}${listboxBlock}${scrollableTextBlock}${multilineTextBlock}\n${pageFunctions}\n\nvoid drawCurrentPage() {\n  tft.fillScreen(ILI9341_BLACK);\n  ${ctx.onPageLoad.length ? ctx.onPageLoad.join('\n  ') : ''}\n  switch (currentPage) {\n${drawSwitch}\n  }\n}\n${keyboardBlock}\n${handleTouchFunction}\n\nvoid setup() {\n  Serial.begin(115200);\n   pinMode(21, OUTPUT);\n  digitalWrite(21, HIGH);\nWiFi.begin(ssid, password);\nSerial.print("Verbinde mit WLAN");\nwhile (WiFi.status() != WL_CONNECTED) {\n  delay(500);\n    Serial.print(".");\n}\n//use getWeather\n  SPI.begin(14, 12, 13, 15);\n  tft.begin();\n  tft.setRotation(${s.rotation});\n  touchscreenSPI.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);\n  ts.begin(touchscreenSPI);\n  ts.setRotation(0);\n   \n  ${ctx.setupCode.length ? ctx.setupCode.join('\n  ') : ''}\n  drawCurrentPage();\n}\n\nvoid loop() {\n  if (ts.tirqTouched() && ts.touched()) {\n    TS_Point p = ts.getPoint();\n    // Bei falscher Orientierung: Touch-Min/Max im Builder kalibrieren oder X/Y tauschen.\n    ${newTouchCallibration} if (!touchActive) {\n      touchActive = true;\n      touchStartX = x;\n      touchStartY = y;\n    }\n    touchLastX = x;\n    touchLastY = y;\n  } else if (touchActive) {\n    touchActive = false;\n    handleTouch(touchStartX, touchStartY, touchLastX, touchLastY);\n  }\n  ${ctx.loopCode.length ? ctx.loopCode.join('\n  ') : ''}\n  delay(10);\n}\n`;
+    }
+	// Alle Treffer-Tests laufen über endX/endY (Loslass-Punkt der Berührung),
+	// denselben Punkt, den der generierte Touch-Handler tatsächlich übergibt.
+	function touchSnippet(item) {
+
+		// TouchZone: freie Gesten-Fläche (Tippen oder Wischen)
+		if (item.type === "touchZone") {
+			const hit = `if (endX >= ${item.x} && endX < ${item.x + item.w} && endY >= ${item.y} && endY < ${item.y + item.h})`;
+			let body = "";
+			switch (item.gesture) {
+				case "swipeLeft": body += "if (!swipeLeft) break;\n"; break;
+				case "swipeRight": body += "if (!swipeRight) break;\n"; break;
+				case "swipeUp": body += "if (!swipeUp) break;\n"; break;
+				case "swipeDown": body += "if (!swipeDown) break;\n"; break;
+				default: body += "if (!tap) break;\n"; break;
+			}
+			if (item.executeCode && item.code && item.code.trim() !== "") body += item.code + "\n";
+			if (item.action && item.action.startsWith("page:")) {
+				const target = project.pages.find(p => p.id === item.action.slice(5));
+				if (target) body += `currentPage = PAGE_${cppId(target.id).toUpperCase()};\ndrawCurrentPage();\n`;
+			}
+			return `${hit} {\n  ${body}break;\n}`;
+		}
+
+		// Scroll-Text: Wischen hoch/runter verschiebt den Scroll-Offset
+		if (item.type === "scrollableText") {
+			const hit = `if (endX >= ${item.x} && endX < ${item.x + item.w} && endY >= ${item.y} && endY < ${item.y + item.h})`;
+			const varName = cppId(item.variable);
+			const lineCount = String(item.text).split("\n").length;
+			const visibleLines = Math.max(1, Math.floor(item.h / item.lineHeight));
+			const maxOffset = Math.max(0, lineCount - visibleLines);
+			return `${hit} {
+  if (swipeUp) ${varName} = min(${varName} + 1, ${maxOffset});
+  else if (swipeDown) ${varName} = max(${varName} - 1, 0);
+  else break;
+  drawCurrentPage();
+  break;
+}`;
+		}
+
+		// Checkbox: Tippen schaltet den booleschen Wert um
+		if (item.type === "checkbox") {
+			const box = { x: item.x, y: item.y, w: Math.max(70, item.text.length * item.size * 7 + 20), h: 18 };
+			const hit = `if (endX >= ${box.x} && endX < ${box.x + box.w} && endY >= ${box.y} && endY < ${box.y + box.h})`;
+			return `${hit} {
+  if (!tap) break;
+  ${cppId(item.variable)} = !${cppId(item.variable)};
+  drawCurrentPage();
+  break;
+}`;
+		}
+
+		// Eingabefeld: Tippen öffnet die Bildschirmtastatur
+		if (item.type === "input") {
+			const hit = `if (endX >= ${item.x} && endX < ${item.x + item.w} && endY >= ${item.y} && endY < ${item.y + item.h})`;
+			return `${hit} {
+  if (!tap) break;
+  openKeyboard(${cppId(item.variable)}, sizeof(${cppId(item.variable)}));
+  break;
+}`;
+		}
+
+		// Listbox: Tippen auf eine Zeile wählt sie aus
+		if (item.type === "listbox") {
+			const hit = `if (endX >= ${item.x} && endX < ${item.x + item.w} && endY >= ${item.y} && endY < ${item.y + item.h})`;
+			const itemCount = String(item.items).split("\n").filter(line => line.trim() !== "").length;
+			return `${hit} {
+  if (!tap) break;
+  int row = (endY - ${item.y}) / ${item.rowHeight};
+  if (row >= 0 && row < ${itemCount}) {
+    ${cppId(item.variable)} = row;
+    drawCurrentPage();
+  }
+  break;
+}`;
+		}
+
+		// Standard: Schaltfläche & alle sonstigen berührbaren Elemente mit x/y/w/h
+		const hit = `if (endX >= ${item.x} && endX < ${item.x + item.w} && endY >= ${item.y} && endY < ${item.y + item.h})`;
+		let body = "if (!tap) break;\n";
+		if (item.executeCode && item.code && item.code.trim() !== "") body += item.code + "\n";
+		const action = item.action || "none";
+		if (action.startsWith("page:")) {
+			const target = project.pages.find(page => page.id === action.slice(5));
+			if (target) body += `currentPage = PAGE_${cppId(target.id).toUpperCase()};\n`;
+		}
+		body += "drawCurrentPage();\n";
+		return `${hit} {\n  ${body}break;\n}`;
+	}
+
+    function downloadFile(name, content, type) { const url = URL.createObjectURL(new Blob([content], { type })); const link = document.createElement('a'); link.href = url; link.download = name; link.click(); setTimeout(() => URL.revokeObjectURL(url), 500); }
+    function safeFileName(value) { return String(value || 'cyd_ui').trim().replace(/[^a-z0-9_-]+/gi, '_').replace(/^_+|_+$/g, '') || 'cyd_ui'; }
+    function showToast(message) { el('toast').textContent = message; el('toast').classList.add('visible'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el('toast').classList.remove('visible'), 2200); }
+
+    el('display').addEventListener('dragover', event => { event.preventDefault(); el('display').classList.add('drop-active'); });
+    el('display').addEventListener('dragleave', () => el('display').classList.remove('drop-active'));
+    el('display').addEventListener('drop', event => { event.preventDefault(); el('display').classList.remove('drop-active'); const type = event.dataTransfer.getData('application/cyd-element'); const rect = el('display').getBoundingClientRect(); addElement(type, (event.clientX - rect.left) * 320 / rect.width, (event.clientY - rect.top) * 240 / rect.height); });
+    el('display').addEventListener('pointermove', event => { const rect = el('display').getBoundingClientRect(); el('coordinates').textContent = `Koordinaten: x ${Math.round(clamp((event.clientX - rect.left) * 320 / rect.width, 0, 319))}, y ${Math.round(clamp((event.clientY - rect.top) * 240 / rect.height, 0, 239))}`; });
+    el('display').addEventListener('click', event => { if (event.target === el('display')) { project.selectedId = null; render(); } });
+    el('project-name').addEventListener('input', event => { project.name = event.target.value; saveToStorage(); });
+    el('add-page').addEventListener('click', addPage);
+    el('delete-element').addEventListener('click', deleteSelected);
+    el('new-project').addEventListener('click', () => { if (confirm('Neues Projekt starten? Das aktuelle lokale Projekt wird ersetzt.')) { project = DEFAULT_PROJECT(); render(); } });
+    el('save-project').addEventListener('click', () => { downloadFile(`${safeFileName(project.name)}.cyd.json`, JSON.stringify(project, null, 2), 'application/json'); showToast('Projektdatei wurde heruntergeladen.'); });
+    el('load-project').addEventListener('click', () => el('load-file').click());
+    el('load-file').addEventListener('change', async event => { const file = event.target.files[0]; if (!file) return; try { project = normalizeProject(JSON.parse(await file.text())); render(); showToast('Projekt geladen.'); } catch { showToast('Die Datei ist kein gültiges CYD-Projekt.'); } event.target.value = ''; });
+    el('export-code').addEventListener('click', () => { el('code-output').textContent = generateArduinoCode(); el('code-dialog').showModal(); });
+    el('close-dialog').addEventListener('click', () => el('code-dialog').close());
+    el('copy-code').addEventListener('click', async () => { try { await navigator.clipboard.writeText(el('code-output').textContent); showToast('Arduino-Code kopiert.'); } catch { showToast('Kopieren nicht möglich — Code bitte markieren.'); } });
+    el('download-code').addEventListener('click', () => { downloadFile(`${safeFileName(project.name)}.ino`, generateArduinoCode(), 'text/plain'); showToast('Arduino-Sketch wurde heruntergeladen.'); });
+    document.addEventListener('keydown', event => { const item = selectedElement(); if (!item || ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) return; if (event.key === 'Delete' || event.key === 'Backspace') { event.preventDefault(); deleteSelected(); return; } const moves = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }; if (moves[event.key]) { event.preventDefault(); item.x = clamp(item.x + moves[event.key][0], 0, 319); item.y = clamp(item.y + moves[event.key][1], 0, 239); render(); } });
+    render();
+  </script>
+</body>
+</html>

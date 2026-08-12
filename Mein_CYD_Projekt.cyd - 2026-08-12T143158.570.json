@@ -1,0 +1,1595 @@
+{
+  "name": "Mein CYD Projekt",
+  "activePageId": "page_mseuxm3z",
+  "selectedId": null,
+  "settings": {
+    "tftCS": 15,
+    "tftDC": 2,
+    "tftRST": -1,
+    "touchCS": 33,
+    "rotation": 1,
+    "touchMinX": 200,
+    "touchMaxX": 3800,
+    "touchMinY": 200,
+    "touchMaxY": 3800
+  },
+  "pages": [
+    {
+      "id": "page_home",
+      "name": "Start",
+      "elements": [
+        {
+          "id": "rectangle_mseem4pmlkx7",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#ffffff",
+          "filled": true
+        },
+        {
+          "id": "label_mseemey9d77z",
+          "type": "label",
+          "text": "OpenAlex",
+          "x": 17,
+          "y": 18,
+          "color": "#408491",
+          "size": 6
+        },
+        {
+          "id": "progress_mseen08ri3e1",
+          "type": "progress",
+          "x": 15,
+          "y": 204,
+          "w": 289,
+          "h": 16,
+          "value": 0,
+          "color": "#23c7b7",
+          "background": "#273344",
+          "text": "fortschritt_boot"
+        },
+        {
+          "id": "variableInt_mseenh897bue",
+          "type": "variableInt",
+          "text": "fortschritt_boot",
+          "x": 319,
+          "y": 0,
+          "color": "#ffffff",
+          "size": 0
+        },
+        {
+          "id": "circle_msefqxu2aral",
+          "type": "circle",
+          "x": 138,
+          "y": 135,
+          "radius": 25,
+          "color": "#23c72e",
+          "filled": true
+        },
+        {
+          "id": "label_msefr7rp0s2x",
+          "type": "label",
+          "text": "On",
+          "x": 124,
+          "y": 126,
+          "color": "#ffffff",
+          "size": 2
+        },
+        {
+          "id": "touchZone_msefrgawtbhk",
+          "type": "touchZone",
+          "gesture": "tap",
+          "x": 99,
+          "y": 104,
+          "w": 80,
+          "h": 60,
+          "action": "none",
+          "executeCode": true,
+          "code": "currentPage = PAGE_PAGE_MSEFX142;\ndrawCurrentPage();"
+        },
+        {
+          "id": "touchZone_msorf2aapwve",
+          "type": "touchZone",
+          "gesture": "tap",
+          "x": 0,
+          "y": 0,
+          "w": 80,
+          "h": 60,
+          "action": "page:page_msorfavx",
+          "executeCode": false,
+          "code": ""
+        }
+      ]
+    },
+    {
+      "id": "page_mseffrpg",
+      "name": "Home",
+      "elements": [
+        {
+          "id": "rectangle_mseffva9kd1w",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#ffffff",
+          "filled": true
+        },
+        {
+          "id": "progress_msefkekbrb1q",
+          "type": "progress",
+          "x": 22,
+          "y": 57,
+          "w": 180,
+          "h": 16,
+          "value": 65,
+          "color": "#23c7b7",
+          "background": "#273344",
+          "text": "hum1"
+        },
+        {
+          "id": "progress_msefkgczamyv",
+          "type": "progress",
+          "x": 22,
+          "y": 84,
+          "w": 180,
+          "h": 16,
+          "value": 31,
+          "color": "#ffd500",
+          "background": "#273344",
+          "text": "temp1"
+        },
+        {
+          "id": "label_msefkmafgvfn",
+          "type": "label",
+          "text": "65% r.H.",
+          "x": 209,
+          "y": 57,
+          "color": "#000000",
+          "size": 2,
+          "variable": "hum1"
+        },
+        {
+          "id": "label_msefkyzyd4ef",
+          "type": "label",
+          "text": "31°C",
+          "x": 208,
+          "y": 83,
+          "color": "#000000",
+          "size": 2,
+          "variable": "temp1"
+        },
+        {
+          "id": "line_msefnwyd35hh",
+          "type": "line",
+          "x": 0,
+          "y": 28,
+          "length": 320,
+          "thickness": 4,
+          "color": "#81b2e1"
+        },
+        {
+          "id": "rectangle_msefp9vvayxv",
+          "type": "rectangle",
+          "x": 13,
+          "y": 49,
+          "w": 278,
+          "h": 63,
+          "color": "#2778be",
+          "filled": false
+        },
+        {
+          "id": "touchZone_msefpv8hm53l",
+          "type": "touchZone",
+          "gesture": "swipeDown",
+          "x": 1,
+          "y": 0,
+          "w": 320,
+          "h": 110,
+          "action": "page:page_msefx142",
+          "executeCode": false,
+          "code": ""
+        },
+        {
+          "id": "variableInt_msegeeztxduw",
+          "type": "variableInt",
+          "text": "temp1",
+          "x": 319,
+          "y": 23,
+          "color": "#ffffff",
+          "size": 31
+        },
+        {
+          "id": "variableInt_msegepcf56pu",
+          "type": "variableInt",
+          "text": "hum1",
+          "x": 319,
+          "y": 142,
+          "color": "#ffffff",
+          "size": 65
+        },
+        {
+          "id": "codeExecutor_msfu4oma2w02",
+          "type": "codeExecutor",
+          "code": "if (currentPage == PAGE_PAGE_MSEFFRPG || currentPage == PAGE_PAGE_MSOPVRT5) {\n// Wetter-Werte setzen\nif (resolveCity(stadt)) {\n  getWeather(temp1, hum1);\n} else {\n  Serial.println(\"Abbruch: Keine gültigen Koordinaten.\");\n}\n  drawCurrentPage();\n}",
+          "executeOn": "interval",
+          "intervalMs": 27000,
+          "varName": "codeAPI1",
+          "x": 315,
+          "y": 239
+        },
+        {
+          "id": "label_msfugsk7o1k9",
+          "type": "label",
+          "text": " C",
+          "x": 265,
+          "y": 83,
+          "color": "#000000",
+          "size": 2,
+          "variable": ""
+        },
+        {
+          "id": "label_msfuh5hvkfwi",
+          "type": "label",
+          "text": "%",
+          "x": 261,
+          "y": 58,
+          "color": "#000000",
+          "size": 2,
+          "variable": ""
+        },
+        {
+          "id": "label_msfzolkmr56o",
+          "type": "label",
+          "text": "Wetter-Uebersicht",
+          "x": 0,
+          "y": 0,
+          "color": "#2ecabb",
+          "size": 3,
+          "variable": ""
+        },
+        {
+          "id": "label_msfzxp339231",
+          "type": "label",
+          "text": "Text",
+          "x": 101,
+          "y": 135,
+          "color": "#000000",
+          "size": 3,
+          "variable": "time_hour"
+        },
+        {
+          "id": "label_msfzy31na3mr",
+          "type": "label",
+          "text": ":",
+          "x": 138,
+          "y": 134,
+          "color": "#000000",
+          "size": 3,
+          "variable": ""
+        },
+        {
+          "id": "label_msfzyboxijn5",
+          "type": "label",
+          "text": "Text",
+          "x": 157,
+          "y": 135,
+          "color": "#000000",
+          "size": 3,
+          "variable": "time_min"
+        },
+        {
+          "id": "variableInt_msfzyssontr6",
+          "type": "variableInt",
+          "text": "time_hour",
+          "x": 315,
+          "y": 68,
+          "color": "#ffffff",
+          "size": 12
+        },
+        {
+          "id": "variableInt_msfzz5exlod6",
+          "type": "variableInt",
+          "text": "time_min",
+          "x": 319,
+          "y": 99,
+          "color": "#ffffff",
+          "size": 0
+        },
+        {
+          "id": "codeExecutor_msfzzhte3t3v",
+          "type": "codeExecutor",
+          "code": "// Dein Arduino-Code hier\ntime_min++;\nif (time_min >= 59) {\ntime_min = 0;\ntime_hour++;\n}\nif (time_hour >= 24) {\ntime_min = 0;\ntime_hour = 0;\n}",
+          "executeOn": "interval",
+          "intervalMs": 60000,
+          "varName": "time1",
+          "x": 319,
+          "y": 207
+        }
+      ]
+    },
+    {
+      "id": "page_msefx142",
+      "name": "Apps",
+      "elements": [
+        {
+          "id": "rectangle_msefxbbzt7jq",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#1f1f1f",
+          "filled": true
+        },
+        {
+          "id": "rectangle_msefyk82uf22",
+          "type": "rectangle",
+          "x": 15,
+          "y": 49,
+          "w": 120,
+          "h": 165,
+          "color": "#2778be",
+          "filled": false
+        },
+        {
+          "id": "rectangle_msefyll5y91i",
+          "type": "rectangle",
+          "x": 144,
+          "y": 49,
+          "w": 120,
+          "h": 165,
+          "color": "#2778be",
+          "filled": false
+        },
+        {
+          "id": "button_msefzcllfzcl",
+          "type": "button",
+          "text": "Start",
+          "x": 22,
+          "y": 186,
+          "w": 105,
+          "h": 25,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 25,
+          "action": "page:page_mseg45ti",
+          "code": "",
+          "executeCode": false
+        },
+        {
+          "id": "button_mseg055hcuxf",
+          "type": "button",
+          "text": "Start",
+          "x": 152,
+          "y": 185,
+          "w": 105,
+          "h": 25,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 50,
+          "action": "page:page_mseffrpg",
+          "code": "",
+          "executeCode": false
+        },
+        {
+          "id": "multilineText_mseg0pa3vmw2",
+          "type": "multilineText",
+          "x": 26,
+          "y": 87,
+          "w": 97,
+          "text": "Stellen Sie ein, wie Sie OpenAlex benutzen möchten und konfigurieren Sie die Funktionen.",
+          "size": 1,
+          "lineSpacing": 4,
+          "color": "#ffffff"
+        },
+        {
+          "id": "multilineText_mseg1pr3xsgj",
+          "type": "multilineText",
+          "x": 151,
+          "y": 89,
+          "w": 105,
+          "text": "Lassen Sie sich das aktuelle Wetter auf einen Blick anzeigen und lesen Sie die Vorhersage für morgen.",
+          "size": 1,
+          "lineSpacing": 4,
+          "color": "#ffffff"
+        },
+        {
+          "id": "label_mseg2of6o0rs",
+          "type": "label",
+          "text": "Setup",
+          "x": 23,
+          "y": 54,
+          "color": "#ffffff",
+          "size": 2
+        },
+        {
+          "id": "label_mseg2xb5nlov",
+          "type": "label",
+          "text": "Wetter",
+          "x": 158,
+          "y": 56,
+          "color": "#ffffff",
+          "size": 2
+        },
+        {
+          "id": "touchZone_mseuu0q4ix48",
+          "type": "touchZone",
+          "gesture": "swipeLeft",
+          "x": 214,
+          "y": 0,
+          "w": 80,
+          "h": 240,
+          "action": "page:page_mseuudl2",
+          "executeCode": false,
+          "code": ""
+        },
+        {
+          "id": "line_msq15exl3raq",
+          "type": "line",
+          "x": 0,
+          "y": 20,
+          "length": 320,
+          "thickness": 2,
+          "color": "#ffffff"
+        },
+        {
+          "id": "label_msq15nz94nv4",
+          "type": "label",
+          "text": "",
+          "x": 0,
+          "y": 0,
+          "color": "#ffffff",
+          "size": 2,
+          "variable": "WLANSSID"
+        },
+        {
+          "id": "label_msq166wz1d5z",
+          "type": "label",
+          "text": "No Accu",
+          "x": 196,
+          "y": 0,
+          "color": "#ffffff",
+          "size": 2,
+          "variable": ""
+        },
+        {
+          "id": "touchZone_msq1d0hvi4i7",
+          "type": "touchZone",
+          "gesture": "swipeDown",
+          "x": 0,
+          "y": 0,
+          "w": 229,
+          "h": 60,
+          "action": "page:page_msq1dru6",
+          "executeCode": false,
+          "code": ""
+        }
+      ]
+    },
+    {
+      "id": "page_mseg45ti",
+      "name": "Setup",
+      "elements": [
+        {
+          "id": "rectangle_mseg4acct7n6",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#ffffff",
+          "filled": true
+        },
+        {
+          "id": "listbox_mseg4js0bjdk",
+          "type": "listbox",
+          "x": 32,
+          "y": 66,
+          "w": 249,
+          "h": 126,
+          "items": "Standort ->\nUpdates  ->\nZeit     ->\n</> Entwickler",
+          "variable": "listSelected",
+          "selectedIndex": 0,
+          "rowHeight": 31,
+          "color": "#000000",
+          "background": "#7b7b65",
+          "selectedColor": "#093e67"
+        },
+        {
+          "id": "label_mseg4zazlu58",
+          "type": "label",
+          "text": "Einstellungen",
+          "x": 24,
+          "y": 0,
+          "color": "#57a8bc",
+          "size": 5
+        },
+        {
+          "id": "touchZone_mseg97fdbamr",
+          "type": "touchZone",
+          "gesture": "swipeDown",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 60,
+          "action": "page:page_msefx142",
+          "executeCode": false,
+          "code": ""
+        },
+        {
+          "id": "button_mseuayy51alb",
+          "type": "button",
+          "text": "Open Entry",
+          "x": 88,
+          "y": 196,
+          "w": 120,
+          "h": 36,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 5,
+          "action": "none",
+          "code": "switch(listSelected) {\n  case 0:\n    currentPage = PAGE_PAGE_MSEUGJJT;\n    drawCurrentPage();\n    break;\n  case 1:\n    currentPage = PAGE_PAGE_MSEUXM3Z;\n    drawCurrentPage();\n    break;\n  case 2:\n    currentPage = PAGE_PAGE_MSG02TJ0;\n    drawCurrentPage();\n    break;\n  case 3:\n    confirmDialog(\"Devmode\");\n    developerMode = true;\n    drawCurrentPage();\n    break;\n  default:\n    break;\n}",
+          "executeCode": true
+        },
+        {
+          "id": "declaration_msoq98nnz9v6",
+          "type": "declaration",
+          "code": "// Globale Deklarationen hier\nvoid confirmDialog(const char* text) {\n  tft.fillRect(30, 30, 250, 180, ILI9341_RED);\n  tft.drawRect(30, 30, 250, 180, ILI9341_BLACK);\n  drawMultilineText(35, 35, 200,\"Das Betriebssystem hat Ihre Zustimmung erbeten.\\nWird in 5 Sek. autorisiert...\", 0xFFFF, 1, 4);\n  drawMultilineText(35, 100, 200,text, 0xFFFF, 1, 4);\ndelay(5000);\n}\nvoid textWindow(const char* text) {\n  tft.fillRect(30, 30, 250, 180, ILI9341_BLUE);\n  tft.drawRect(30, 30, 250, 180, ILI9341_BLACK);\n  drawMultilineText(35, 35, 200,text, 0xFFFF, 1, 4);\n\ndelay(5000);\n}\nvoid textWindowRunning(const char* text) {\n  tft.fillRect(30, 30, 250, 180, ILI9341_BLUE);\n  tft.drawRect(30, 30, 250, 180, ILI9341_BLACK);\n  drawMultilineText(35, 35, 200,text, 0xFFFF, 1, 4);\n\n\n}",
+          "x": 319,
+          "y": 59
+        }
+      ]
+    },
+    {
+      "id": "page_mseugjjt",
+      "name": "Network",
+      "elements": [
+        {
+          "id": "rectangle_mseugm4ieilf",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#ffffff",
+          "filled": true
+        },
+        {
+          "id": "label_mseuhgdnfin5",
+          "type": "label",
+          "text": "Network Settings",
+          "x": 0,
+          "y": 0,
+          "color": "#0a95ff",
+          "size": 4
+        },
+        {
+          "id": "line_mseuhv08741a",
+          "type": "line",
+          "x": 0,
+          "y": 35,
+          "length": 320,
+          "thickness": 2,
+          "color": "#5180b3"
+        },
+        {
+          "id": "input_mseuisfbb1mk",
+          "type": "input",
+          "x": 15,
+          "y": 56,
+          "w": 233,
+          "h": 28,
+          "text": "",
+          "placeholder": "Stadt eingeben",
+          "variable": "stadt",
+          "maxLength": 32,
+          "color": "#ffffff",
+          "background": "#333333"
+        },
+        {
+          "id": "touchZone_mseupqr5ttpo",
+          "type": "touchZone",
+          "gesture": "swipeUp",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 47,
+          "action": "page:page_mseg45ti",
+          "executeCode": false,
+          "code": ""
+        }
+      ]
+    },
+    {
+      "id": "page_mseuudl2",
+      "name": "Apps2",
+      "elements": [
+        {
+          "id": "rectangle_mseuuqkt019m",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#212121",
+          "filled": true
+        },
+        {
+          "id": "label_mseuvg4nznbr",
+          "type": "label",
+          "text": "OpenAlex",
+          "x": 2,
+          "y": 84,
+          "color": "#3d3d3d",
+          "size": 6,
+          "variable": ""
+        },
+        {
+          "id": "touchZone_mseuw0dlqd1l",
+          "type": "touchZone",
+          "gesture": "swipeRight",
+          "x": 0,
+          "y": 0,
+          "w": 80,
+          "h": 240,
+          "action": "page:page_msefx142",
+          "executeCode": false,
+          "code": ""
+        },
+        {
+          "id": "rectangle_msiv9iosku59",
+          "type": "rectangle",
+          "x": 147,
+          "y": 49,
+          "w": 134,
+          "h": 165,
+          "color": "#2778be",
+          "filled": false
+        },
+        {
+          "id": "button_msiva0rrssvs",
+          "type": "button",
+          "text": "Try Out",
+          "x": 165,
+          "y": 178,
+          "w": 105,
+          "h": 25,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 50,
+          "action": "none",
+          "code": "String systemPrompt = \"Du bist ein freundlicher KI-Assistent. Dein Name ist OpenAlex.\\n\"\n                       \"Du informierst den Nutzer kurz und prägnant über das Wetter oder andere Fragen die er dir stellt.\\n\"\n                       \"Hier hast du die aktuellen Daten: In der Stadt des Benutzers sind \" + String(temp1) + \"°C und die Luftfeuchte beträgt \" + String(hum1) + \"%. \\n\"\n                       \"Antworte mit maximal 256 Zeichen, also in ein bis drei Sätzen.\";\nantwort = askGroq(\"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\", frage, systemPrompt.c_str());\ndrawCurrentPage();",
+          "executeCode": true
+        },
+        {
+          "id": "input_msivwiz9o4rs",
+          "type": "input",
+          "x": 156,
+          "y": 59,
+          "w": 118,
+          "h": 28,
+          "text": "",
+          "placeholder": "Question...",
+          "variable": "frage",
+          "maxLength": 63,
+          "color": "#ffffff",
+          "background": "#333333"
+        },
+        {
+          "id": "declaration_msiwdx9wxe6s",
+          "type": "declaration",
+          "code": "// Globale Deklarationen hier\nchar* antwort = \"\";",
+          "x": 319,
+          "y": 115
+        },
+        {
+          "id": "multilineText_msk11tw3scpa",
+          "type": "multilineText",
+          "variable": "antwort",
+          "x": 159,
+          "y": 96,
+          "w": 106,
+          "text": "Mehrzeiliger Text, der automatisch umgebrochen wird, sobald die Breite überschritten ist.",
+          "size": 1,
+          "lineSpacing": 4,
+          "color": "#ffffff"
+        },
+        {
+          "id": "touchZone_msk15k722f0s",
+          "type": "touchZone",
+          "gesture": "swipeLeft",
+          "x": 216,
+          "y": 0,
+          "w": 80,
+          "h": 240,
+          "action": "page:page_msk15djy",
+          "executeCode": false,
+          "code": ""
+        },
+        {
+          "id": "rectangle_msoqoe9p1dow",
+          "type": "rectangle",
+          "x": 29,
+          "y": 48,
+          "w": 105,
+          "h": 165,
+          "color": "#2778be",
+          "filled": false
+        },
+        {
+          "id": "label_msoqp09huuhz",
+          "type": "label",
+          "text": "Widgets",
+          "x": 35,
+          "y": 52,
+          "color": "#ffffff",
+          "size": 2,
+          "variable": ""
+        },
+        {
+          "id": "multilineText_msoqp7fkgd1u",
+          "type": "multilineText",
+          "variable": "",
+          "x": 37,
+          "y": 78,
+          "w": 87,
+          "text": "Die Wettervorhersage. Detailliert, grafisch, schoen.",
+          "size": 1,
+          "lineSpacing": 4,
+          "color": "#ffffff"
+        },
+        {
+          "id": "button_msoqq01q0od8",
+          "type": "button",
+          "text": "Try Out",
+          "x": 36,
+          "y": 183,
+          "w": 91,
+          "h": 23,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 50,
+          "action": "none",
+          "code": "if (developerMode) {\n  currentPage = PAGE_PAGE_MSOPVRT5;\n  drawCurrentPage();\n}",
+          "executeCode": true
+        }
+      ]
+    },
+    {
+      "id": "page_mseuxm3z",
+      "name": "Hilfe",
+      "elements": [
+        {
+          "id": "rectangle_mseuyc66v2tu",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#ffffff",
+          "filled": true
+        },
+        {
+          "id": "touchZone_mseuyig2pcll",
+          "type": "touchZone",
+          "gesture": "swipeDown",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 60,
+          "action": "page:page_msefx142",
+          "executeCode": false,
+          "code": ""
+        },
+        {
+          "id": "label_mseuyvngvrre",
+          "type": "label",
+          "text": "Ueber OpenAlex",
+          "x": 0,
+          "y": 0,
+          "color": "#227d9b",
+          "size": 3,
+          "variable": ""
+        },
+        {
+          "id": "multilineText_mseuz9fujfje",
+          "type": "multilineText",
+          "x": 78,
+          "y": 51,
+          "w": 180,
+          "text": "Aktualisieren Sie OpenAlex auf Firmware Rev. 2.12.477 um Sprachbedienung zu nutzen.\n\n\n\\n\nÜber OpenAlex: OpenAlex, App, Runs on: TBS\nFor further information see the OS's Boot Menu.",
+          "size": 1,
+          "lineSpacing": 4,
+          "color": "#000000"
+        },
+        {
+          "id": "circle_msfzqehs1if4",
+          "type": "circle",
+          "x": 40,
+          "y": 69,
+          "radius": 25,
+          "color": "#3fc723",
+          "filled": true
+        },
+        {
+          "id": "label_msfzqowiqvrx",
+          "type": "label",
+          "text": "i",
+          "x": 31,
+          "y": 50,
+          "color": "#ffffff",
+          "size": 4,
+          "variable": ""
+        },
+        {
+          "id": "rectangle_msfzt3y6y7r0",
+          "type": "rectangle",
+          "x": 7,
+          "y": 33,
+          "w": 300,
+          "h": 200,
+          "color": "#2778be",
+          "filled": false
+        }
+      ]
+    },
+    {
+      "id": "page_msg02tj0",
+      "name": "Time",
+      "elements": [
+        {
+          "id": "rectangle_msg04vw1rvyw",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#2778be",
+          "filled": true
+        },
+        {
+          "id": "label_msg0571zxaad",
+          "type": "label",
+          "text": "Zeiteinstellung",
+          "x": 43,
+          "y": 0,
+          "color": "#ffffff",
+          "size": 2,
+          "variable": ""
+        },
+        {
+          "id": "label_msg05jfek1uq",
+          "type": "label",
+          "text": "Text",
+          "x": 140,
+          "y": 42,
+          "color": "#ffffff",
+          "size": 2,
+          "variable": "time_hour"
+        },
+        {
+          "id": "label_msg05ovo9xwz",
+          "type": "label",
+          "text": "Text",
+          "x": 141,
+          "y": 122,
+          "color": "#ffffff",
+          "size": 2,
+          "variable": "time_min"
+        },
+        {
+          "id": "button_msg05xptooq5",
+          "type": "button",
+          "text": "+",
+          "x": 18,
+          "y": 34,
+          "w": 120,
+          "h": 36,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 5,
+          "action": "none",
+          "code": "time_hour++;",
+          "executeCode": true
+        },
+        {
+          "id": "button_msg063e8lkg1",
+          "type": "button",
+          "text": "-",
+          "x": 17,
+          "y": 73,
+          "w": 120,
+          "h": 36,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 5,
+          "action": "none",
+          "code": "time_hour--;\ndrawCurrentPage();",
+          "executeCode": true
+        },
+        {
+          "id": "button_msg0671hpjr3",
+          "type": "button",
+          "text": "+",
+          "x": 17,
+          "y": 115,
+          "w": 120,
+          "h": 36,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 5,
+          "action": "none",
+          "code": "time_min++;\ndrawCurrentPage();",
+          "executeCode": true
+        },
+        {
+          "id": "button_msg069sfduxj",
+          "type": "button",
+          "text": "-",
+          "x": 17,
+          "y": 154,
+          "w": 120,
+          "h": 36,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 5,
+          "action": "none",
+          "code": "time_min--;\ndrawCurrentPage();",
+          "executeCode": true
+        },
+        {
+          "id": "button_msiv6bjjqo16",
+          "type": "button",
+          "text": "Apply",
+          "x": 166,
+          "y": 153,
+          "w": 120,
+          "h": 36,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 50,
+          "action": "page:page_mseg45ti",
+          "code": "",
+          "executeCode": false
+        }
+      ]
+    },
+    {
+      "id": "page_msk15djy",
+      "name": "Apps3",
+      "elements": [
+        {
+          "id": "rectangle_msk19zs04gsf",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#ffffff",
+          "filled": true
+        },
+        {
+          "id": "label_msk1aa4g6f9u",
+          "type": "label",
+          "text": "Accessibility",
+          "x": 0,
+          "y": 0,
+          "color": "#0054ad",
+          "size": 4,
+          "variable": ""
+        },
+        {
+          "id": "line_msk1aok8tmvq",
+          "type": "line",
+          "x": 0,
+          "y": 36,
+          "length": 320,
+          "thickness": 2,
+          "color": "#0054ad"
+        },
+        {
+          "id": "circle_msk1b6xmxzks",
+          "type": "circle",
+          "x": 145,
+          "y": 127,
+          "radius": 40,
+          "color": "#007bff",
+          "filled": true
+        },
+        {
+          "id": "circle_msk1c5uy5hq0",
+          "type": "circle",
+          "x": 144,
+          "y": 127,
+          "radius": 33,
+          "color": "#0054ad",
+          "filled": true
+        },
+        {
+          "id": "circle_msk1d0th1ry1",
+          "type": "circle",
+          "x": 146,
+          "y": 127,
+          "radius": 47,
+          "color": "#23c7b7",
+          "filled": false
+        },
+        {
+          "id": "label_msk1digabega",
+          "type": "label",
+          "text": "Speak",
+          "x": 120,
+          "y": 118,
+          "color": "#ffffff",
+          "size": 2,
+          "variable": ""
+        },
+        {
+          "id": "touchZone_msk1dt6m1ro0",
+          "type": "touchZone",
+          "gesture": "tap",
+          "x": 97,
+          "y": 77,
+          "w": 98,
+          "h": 96,
+          "action": "none",
+          "executeCode": true,
+          "code": "tft.fillRect(20, 200, 280, 40, 0x03DF);\nif (recordAudio()) {\n  transcript = sendToGroqSTT(\"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\");\n  \n  Serial.println(transcript);\n  freeAudioBuffer();  // wichtig: RAM sofort wieder freigeben\n}\ndrawCurrentPage();"
+        },
+        {
+          "id": "multilineText_msk1gtnd00l9",
+          "type": "multilineText",
+          "variable": "transcript",
+          "x": 0,
+          "y": 43,
+          "w": 320,
+          "text": "Mehrzeiliger Text, der automatisch umgebrochen wird, sobald die Breite überschritten ist.",
+          "size": 1,
+          "lineSpacing": 4,
+          "color": "#000000"
+        },
+        {
+          "id": "touchZone_msk1msufh731",
+          "type": "touchZone",
+          "gesture": "swipeDown",
+          "x": 0,
+          "y": 3,
+          "w": 320,
+          "h": 60,
+          "action": "page:page_mseuudl2",
+          "executeCode": false,
+          "code": ""
+        },
+        {
+          "id": "declaration_msk263e7yrnd",
+          "type": "declaration",
+          "code": "// Globale Deklarationen hier\nString transcript = \"Nichts\";",
+          "x": 319,
+          "y": 46
+        }
+      ]
+    },
+    {
+      "id": "page_msopvrt5",
+      "name": "Widgets",
+      "elements": [
+        {
+          "id": "rectangle_msopvvleyehv",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#ffffff",
+          "filled": true
+        },
+        {
+          "id": "label_msopwgvrug6v",
+          "type": "label",
+          "text": "Vorhersage",
+          "x": 0,
+          "y": 0,
+          "color": "#42adf0",
+          "size": 5,
+          "variable": ""
+        },
+        {
+          "id": "line_msopx1x8wkf0",
+          "type": "line",
+          "x": 0,
+          "y": 38,
+          "length": 320,
+          "thickness": 2,
+          "color": "#42adf0"
+        },
+        {
+          "id": "label_msopyap5ivr4",
+          "type": "label",
+          "text": "<",
+          "x": 21,
+          "y": 109,
+          "color": "#000000",
+          "size": 6,
+          "variable": ""
+        },
+        {
+          "id": "label_msopymjfpio2",
+          "type": "label",
+          "text": ">",
+          "x": 241,
+          "y": 107,
+          "color": "#000000",
+          "size": 6,
+          "variable": ""
+        },
+        {
+          "id": "touchZone_msopz739my7j",
+          "type": "touchZone",
+          "gesture": "tap",
+          "x": 0,
+          "y": 112,
+          "w": 80,
+          "h": 60,
+          "action": "none",
+          "executeCode": false,
+          "code": ""
+        },
+        {
+          "id": "touchZone_msopz9d7f37r",
+          "type": "touchZone",
+          "gesture": "tap",
+          "x": 213,
+          "y": 109,
+          "w": 80,
+          "h": 60,
+          "action": "none",
+          "executeCode": false,
+          "code": ""
+        },
+        {
+          "id": "label_msoq08r2ub7g",
+          "type": "label",
+          "text": "Heute",
+          "x": 112,
+          "y": 70,
+          "color": "#47b9ff",
+          "size": 2,
+          "variable": ""
+        },
+        {
+          "id": "circle_msoq13i77kn6",
+          "type": "circle",
+          "x": 152,
+          "y": 122,
+          "radius": 25,
+          "color": "#fecc16",
+          "filled": true
+        },
+        {
+          "id": "rectangle_msoq1drc76i0",
+          "type": "rectangle",
+          "x": 95,
+          "y": 151,
+          "w": 70,
+          "h": 26,
+          "color": "#696969",
+          "filled": true
+        },
+        {
+          "id": "circle_msoq1ruv49f3",
+          "type": "circle",
+          "x": 120,
+          "y": 141,
+          "radius": 25,
+          "color": "#696969",
+          "filled": true
+        },
+        {
+          "id": "circle_msoq21v86gel",
+          "type": "circle",
+          "x": 146,
+          "y": 148,
+          "radius": 13,
+          "color": "#696969",
+          "filled": true
+        },
+        {
+          "id": "circle_msoq3cxmuldz",
+          "type": "circle",
+          "x": 49,
+          "y": 209,
+          "radius": 5,
+          "color": "#23c7b7",
+          "filled": true
+        },
+        {
+          "id": "label_msoq3kqe75x1",
+          "type": "label",
+          "text": "35%",
+          "x": 60,
+          "y": 199,
+          "color": "#000000",
+          "size": 2,
+          "variable": "rainChance"
+        },
+        {
+          "id": "progress_msoq4easeehx",
+          "type": "progress",
+          "x": 111,
+          "y": 203,
+          "w": 20,
+          "h": 8,
+          "value": 17,
+          "color": "#ff1100",
+          "background": "#273344",
+          "variable": ""
+        },
+        {
+          "id": "progress_msoq4y78z3he",
+          "type": "progress",
+          "x": 164,
+          "y": 203,
+          "w": 20,
+          "h": 8,
+          "value": 81,
+          "color": "#4bff0a",
+          "background": "#273344",
+          "variable": ""
+        },
+        {
+          "id": "label_msoq5giguz0t",
+          "type": "label",
+          "text": "16°C",
+          "x": 129,
+          "y": 197,
+          "color": "#000000",
+          "size": 2,
+          "variable": "temperatureMinimum"
+        },
+        {
+          "id": "label_msoq63djub78",
+          "type": "label",
+          "text": "29°C",
+          "x": 183,
+          "y": 197,
+          "color": "#0a0a0a",
+          "size": 2,
+          "variable": "temperatureMaximum"
+        },
+        {
+          "id": "weatherRainChance_msoqdwjy5zxj",
+          "type": "weatherRainChance",
+          "variable": "rainChance",
+          "range": "today",
+          "intervalMs": 60000,
+          "x": 319,
+          "y": 198
+        },
+        {
+          "id": "weatherTemperature_msoqf17cka3a",
+          "type": "weatherTemperature",
+          "variable": "temperatureMinimum",
+          "day": "today",
+          "mode": "min",
+          "intervalMs": 60000,
+          "x": 319,
+          "y": 239
+        },
+        {
+          "id": "weatherTemperature_msoqg3507efu",
+          "type": "weatherTemperature",
+          "variable": "temperatureMaximum",
+          "day": "today",
+          "mode": "max",
+          "intervalMs": 60000,
+          "x": 319,
+          "y": 171
+        },
+        {
+          "id": "bitmap_msosfnntgvrw",
+          "type": "bitmap",
+          "x": 85,
+          "y": 68,
+          "w": 97,
+          "h": 123,
+          "color": "#000000",
+          "sourceName": "partlycloudy_sun.jpg",
+          "previewData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGEAAAB7CAYAAABkS+5eAAAEDUlEQVR4AeycbW8cIQyEr/n//7nVSLFCtrsc4BfmdieSxQWMGc9zbr71669+tjvw9dLPdgcEYTuC10sQBIHAAQIJmgRBIHCAQIImQRAIHCCQoEkQhGAHPrScJoEAnCAIAoEDBBI0CYJA4ACBBE2CIBA4QCBBkyAIBA4QSNAk8EIgUPYgCZoEAtiCIAgEDhBI0CQIAoEDBBI0CYJA4ACBBE2CIBA4QCDhEZNA4HNXgiB07ak5FIQan7uvCELXnppDQajxufuKIHTtqTkUhBqfu68IQteemkNBqPG5+4ogdO2pORSEGp+7r8xB6JbS4aoDj4fw5/tn1cCIe4+HEGGit4YgeB0MuC8IASZ6SwiC18GA+7eBgL+vAX5sKXEbCHBvBYT9j1O4PxN4CzFz5yr3VhDQZJQxqHUV0W/cBgK+0WZatElt3bZ2+6blrKy3gYDmW1Nas3Bmgf3vuFwst7e2b/XyRs5uBQENmzm2Yg9hjuPzu7jKRU2LdzVmzj8KgplzXI8Nw6h2D/nt76OfcQ8xmr+aRw0BBrRx1eRIztXdkX3UH8lbzaGEgKYRK03hHqK9e5yM9mz087Hm6L2RPDoIUc0e60SAGDF0JYcKwtG4lYbaO6iHsD0viLaW1YxYaSBkNQiTMmujvjcoIFSYZG8wTsN2CGaO99s0c98LYuatkdztEEZERuXsAD6iPQTCyENnOaymnGm92kMPZ3GVf7ZfBsEr9Ez8yh504B7TP0npENA0Ao3fMQDzLGZ6TYXAbn5r3oxp0blpEJgBnGkzINEGj9RLgzDy+M4cgGjDtLyDgXPLjVpTIKC5KIFVdaAZYe9lmG21j2sKhOMjn/R7D0QWGEE4+YYABAJHWcajtoUgmBOdFSAQnRTXkSD8Z9/Phk3Dz07Op1AIEI3Ikbqn6rGf4+8RqkIgQBgiQhBzDevR1iitLggQg4gSw1rHemz/LthehOZlCJEiIhqpqpEBYgnCUwEY6BaE7XnWJQieB+9yFyAQEf1MQ3jqFGT2PQ0hgrxq/HZAEH77seW3KQiZI7ml+4lHo/79P3tyCsJZgc6ejgYdEIRBozLTpiBkjmRmk+y1pyCwN5OlL/vLJwhZ5CbqTkPI/lZMaC9Jreh3GkJJ5ySPVABAq0sQqsRB4K6o7HEJAoypFIn3KqO6t2UIMAViEfh8l9jRjwuCGb9DuL0dsUK/xWW9xIMQCNBnTXziCv07IwzCziY+/W1BICAoCIJA4ACBBE2CIBA4QCBBkyAIBA4QSNAkPBMCQddkEjQJBEAEQRAIHCCQoEkQBAIHCCRoEgSBwAECCZoEQSBwgECCJsEJIeK6IES46KwhCE4DI64LQoSLzhqC4DQw4rogRLjorCEITgMjrgtChIvOGv8AAAD//6AOnqAAAAAGSURBVAMAz5MvoKPTCBIAAAAASUVORK5CYII=",
+          "bitmapData": "////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP//////////P////4D//////////z////+A//////////8/////gP//////////P////4D//////////z////+A////////3/8/////gP///////8////z//4D////////H///4//+A////////4///4f//gP////////HwB+P//4D////////7wAH///+A///////gf4AAf///gP/////+AA+AAD///4D/////+AADwAAf//+A//////AAAeAAH///gP/////gAABwAA///4D/////wAAAMAAP//+A/////4AAABgAB///gP////8AAAAcAAf//4D/////AAAADAAH//+A/////gAAAAwABwP/gP///8AAAAAGAAcD/4D///8AAAAABgAH//+A///+AAAAAAfAB///gP///AAAAAAD8Af//4D///wAAAAAADwP//+A///4AAAAAAAOD///gP//+AAAAAAABx///4D///gAAAAAAAGf//+A///4AAAAAAAB////gP//+AAAAAAAAP///4D//+AAAAAAAAB3//+A//+AAAAAAAAAY///gP/+AAAAAAAAADH//4D//AAAAAAAAAA4//+A//gAAAAAAAAAPP//gP/4AAAAAAAAAD///4D/8AAAAAAAAAAf//+A//AAAAAAAAAAH///gP/wAAAAAAAAAB///4D/4AAAAAAAAAA///+A/+AAAAAAAAAAP///gP/gAAAAAAAAAD///4D/8AAAAAAAAAA///+A//AAAAAAAAAAf///gP/wAAAAAAAAAH///4D/+AAAAAAAAAD///+A//gAAAAAAAAB////gP/8AAAAAAAAA////4D//gAAAAAAAAf///+A//+AAAAAAAAP////gP//wAAAAAAAf////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A////////////////gP///////////////4D///////////////+A/////////////w=="
+        },
+        {
+          "id": "touchZone_msossgdd00so",
+          "type": "touchZone",
+          "gesture": "swipeDown",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 60,
+          "action": "page:page_mseuudl2",
+          "executeCode": false,
+          "code": ""
+        }
+      ]
+    },
+    {
+      "id": "page_msorfavx",
+      "name": "Boot",
+      "elements": [
+        {
+          "id": "rectangle_msorflqaol6j",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#000000",
+          "filled": true
+        },
+        {
+          "id": "label_msorge4w9yx8",
+          "type": "label",
+          "text": "Boot Menu [NOT FOR PU]",
+          "x": 0,
+          "y": 0,
+          "color": "#ffffff",
+          "size": 2,
+          "variable": ""
+        },
+        {
+          "id": "listbox_msori5eiiinh",
+          "type": "listbox",
+          "x": 0,
+          "y": 23,
+          "w": 320,
+          "h": 171,
+          "items": "Reboot\nWipe Data\nUnlock the Bootloader\nTBS Info",
+          "variable": "listSelected123",
+          "selectedIndex": 0,
+          "rowHeight": 40,
+          "color": "#ffffff",
+          "background": "#000000",
+          "selectedColor": "#ffcc00"
+        },
+        {
+          "id": "button_msormg87vgkl",
+          "type": "button",
+          "text": "Go it",
+          "x": 80,
+          "y": 201,
+          "w": 120,
+          "h": 36,
+          "color": "#000000",
+          "textColor": "#ffffff",
+          "radius": 0,
+          "action": "none",
+          "code": "switch(listSelected123) {\n  case 0:\n    confirmDialog(\"E07 Not implemented\");\n    break;\n  case 1:\n    confirmDialog(\"Will be deleted now.\");\n    break;\n  case 2:\ntextWindow(\"---WARNING---\\n\\nFlashing the ESP32 via WLAN without a valid binary can cause a softbrick.\\n\\nYou have 5 Seconds from now to abort by pressing RESET or powering off.\");\nconfirmDialog(\"A03 Enter_Flashing_Mode\");\nenterFlashMode();\n    break;\n  case 3:\n    textWindow(\"TBS - The OS you won't forget\\nThis Device runs its 'App' on TBS, the free OPerating System of TBS. \\n\\nDevice ID: CYD_msormg87vgkl\");\n    break;\n  default:\n    break;\n}",
+          "executeCode": true
+        }
+      ]
+    },
+    {
+      "id": "page_msoszihg",
+      "name": "bmpstorage",
+      "elements": [
+        {
+          "id": "bitmap_msoszk9abbgl",
+          "type": "bitmap",
+          "x": 181,
+          "y": 155,
+          "w": 98,
+          "h": 114,
+          "color": "#000000",
+          "sourceName": "dark_cloudy.jpg",
+          "previewData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGIAAAByCAYAAACocwSVAAADlElEQVR4Aeyc227kMAxDZ/v//7wFURiQU8eJI9liag6gnfgm0TzR9qXo1399KBz4+uhD4YBAUGD4fARCIEgcIJGhjhAIEgdIZKgjBILEARIZ6giBGHBgg63qCBLIAiEQJA6QyFBHCASJAyQy1BECQeIAiQx1hECQOEAiQx0RB8KVSSBc9sUdFog4L12ZBMJlX9xhgYjz0pVJIFz2xR0WiDgvXZkEwmVf3GGBiPPSlUkgXPbFHRaIOC9dmZaBcKnc4LBAkEAWCIEgcYBEhjpCIEgcIJGhjhAIEgdIZKgjBILEARIZ6ogKRN5AIPK8ryoLRGVH3kAg8ryvKgtEZUfeQCDyvK8qC0RlR95AIPK8ryoLRGVH3kAg8ryvKgtEZUfeYAREnsoNKv85EP86H2aerwHR8rdlbPmTla015GjNM8zRgoBpNlpm9dYBpHemtZY5RweimDtqSuvcGQzkbu3HfFZQgYA5XiOQA1Hy9GCUPQzfNCCseRHG2Hw9GHZfRN2nOShAzDLD5mWHkQ7CmvX0beqds/mZYaSCsCb1zPSu2TpXMLC3hLfuyPlUECNCb+892QhzT5ZOp5+cOU12sZAGYuUlLzzoLq/SuQQELnOM7u0nL/b+e2qVhvbWfOTcdBArLnHXECYtR83TQODSiGNBljG6ogSDpikgmAG0TL8DZPadpoBoXZZlDobasLruALH7I5/DQeCSkQJn54JehK0DIHZcnrEPUcaR3+EgIsWtzAWDEaXmGQysYx8Cz1EhEAcnrcE9GDhm92LsCYFouGcNngTjV1WB+GXJz4SF8TMz998wEBCOmCs3J/uKrnCDgPmIHIvmVl15r8cgIBIx1wqe7Fdd4VX6CMROAFbddRjEKmHeN+xt54dBvO2Cb9E7BGL3bjj7OXE2P/ISDIEYSbzL3ggI8Oo2iN27AWbN9OA2CAhZFW+pE9UNuK9AwIXBAADE4LHudoHo2lMvwnxEPRszEogLH2cZfyx7G8QqQUeBu4xvg9jFEHvPlS+fQFjnzfNKCCg7BGK1OAjcJYZAwJQdYGTccRjEX4eRAQGePgKBg1mCUXtG4D6I+7ljdz4GARkQjsDzGwPaS2Trd4Eo4stl3vZd9DN8h4BguMjbNQgECUGBEAgSB0hkqCMEgsQBEhnqCIEgcYBExqyOILnee2QIBAkrgRAIEgdIZKgjBILEARIZ6giBIHGARIY6ggUEftVcke/ANwAAAP//T2jEdAAAAAZJREFUAwAILgESq6doYgAAAABJRU5ErkJggg==",
+          "bitmapData": "////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////wH//////A///////B/A//////wP/////8AD4D/////8D/////8AAPAP/////A/////+AAA4D/////wP/////AAAHAf////8D/////gAAA4D/////A/////wAAAHAf////wP////4AAAA4Af///8D////+AAAAGAD////A/////AAAABgAf///wP///4AAAAAcAD///8D///8AAAAADAA////A///8AAAAAA+AP///wP//+AAAAAAP4B///8D///gAAAAAAPgf///A///wAAAAAAA8B///wP//8AAAAAAADgH//8D///AAAAAAAAcA///A///wAAAAAAADgH//wP//8AAAAAAAAYB//8D//8AAAAAAAAHAP//A//8AAAAAAAAAwD//wP/8AAAAAAAAAOA//8D/+AAAAAAAAABgP//A//AAAAAAAAAAYD//wP/wAAAAAAAAAGA//8D/4AAAAAAAAABwf//A/+AAAAAAAAAAcP//wP/AAAAAAAAAAGD//8D/wAAAAAAAAABh///A/8AAAAAAAAAAZ///wP/AAAAAAAAAAH///8D/wAAAAAAAAAD////A/+AAAAAAAAAA////wP/gAAAAAAAAAf///8D/4AAAAAAAAAP////A//AAAAAAAAAD////wP/4AAAAAAAAB////8D//AAAAAAAAA/////A//4AAAAAAAA/////wP//gAAAAAAB/////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D////////////////A////////////////wP///////////////8D///////8="
+        },
+        {
+          "id": "bitmap_msoszphm41eu",
+          "type": "bitmap",
+          "x": 57,
+          "y": 173,
+          "w": 101,
+          "h": 121,
+          "color": "#000000",
+          "sourceName": "sun.jpg",
+          "previewData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGUAAAB5CAYAAAAgaO8vAAAD8UlEQVR4AeycbW/cMAyDu/7//7yBH7IKruxzEltk7niAUMdvovhEB3QD+v3XHzkHvr/8kXPAUOSQfH0ZiqEIOiAoyZ1iKIIOCEpypxiKoAOCktwpj4ciWMA7SnKnCFI1FEMRdEBQkjvFUAQdEJTkTjEUQQcEJblTDEXQAUFJOztFsNxnSDIUQU6GYiiCDghKcqcYiqADgpLcKYYi6ICgJHeKoQg6IChJp1MEzWFJMhSW84O8hjIwh7VkKCznB3kNZWAOa8lQWM4P8hrKwBzWkqGwnB/kNZSBOawlQ2E5P8j7VCiDkp6/ZCiCDA3FUAQdEJT02E75Ez6Cvt6S9Fgot6oWP2wogoAMxVAEHRCU5E4xFJIDD0vrThEEVgoFv1oIeiAnqQzKAeT4edeJ+Nc4796F89B1BJ6ZUQIFxcYi2+e4xhi3etrnak0lUPBWt4WxCz/0ZDoyvcf+ip8lUFBIVmhmCPZWRZY/01ml58hTBgUJs4IzY7C3F9jfi96ZbB53tPOZvnZPxXMpFBR0tnCYFwN39GJ2X3b+rK7sjlVz5VAgPBoQx1iLAZPj85kxziJ6Z2LeOO7tr5ynQEGBMAKBcRswE9HOX3nGPYjsLPIjmjX6Iw1Kr/Kegb39s/O77p3Nf2afFJTdxu2+/4zxo70yUKoMq8ozMv3VmgSUaqOq872C0K7Toagb1BpW8UyHUlFklkP5ZaBCYRvDzp+9LJijQoEAx28HDOW3J/QZGhSVr47bOjYgpEHZUMvbXGkogiiXQMFXwCgE6x5KGtVyrA0vuLm4BMorDSjk1R6v/zhQAuUnnUczDiyBgv+TeBUzYlT2vKoF6zu1LoGyU+An3m0ogtQ/Hsrur6IrzGlQFM24YuDJM1PbaVCm1H3oJioUdrew8/feOSqUnqhPn6dDYb2trLwzLxwdyozI1XuUgaBWCSjqJsGoypCAgoKrwFTlQU1XQwYKCoBhCIxXB+5FrL53x300KPjnfERW1GrzevchPyLTwJyjQIlGxHE0AkYi4tyVce+OmDeOr+RYfeY/lNUX9+47awBMRfTuy+ax/4hsPZs7qyu7Y9VcKZSscJg3Uwz2zcbsfe2+TF+7p+K5DEpWMEyuKLKXI8uf6eyd3zVfAiUrNDNkV5Gje1V0RI0lUGJCjNWMUNNTAiUWHccAdDXQfUdcvSOeW6Ur3nl1XAIF4lA0AmPVgD4EW18ZFHahT8pvKIK0DOV9oAhW8kaS3CmCMA3FUAQdEJT02E7B7xNHCPp6S9JjodyqWvywoQgCMhRDEXRAUJI75VOhCNYtLcmdIojHUAxF0AFBSe4UQxF0QFCSO8VQBB0QlOROMRRBBwQl/QMAAP//q74qAQAAAAZJREFUAwCCG/t9OL1suAAAAABJRU5ErkJggg==",
+          "bitmapData": "////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j///////x////////4///////8f///////+P///////H////////j///////x////////4///////8f///////+P///////H////////j///////x////////4///////8f///////+P///+///H////////j////H/////8f////4////g/////+D////+P///8H/////B/////j////g/////g/////4////8H/wH/wf////+P////h/AAP8P/////j////8/gAA/n/////4//////gAAD//////+P/////wAAAf//////j/////4AAAD//////4/////8AAAAf/////+P////+AAAAD//////j/////AAAAA//////4/////wAAAAH/////+P////4AAAAA//////j////+AAAAAP/////4/////gAAAAD/////+P////wAAAAAf/////j////8AAAAAH/////4/////AAAAAB/////+P//gHwAAAAAeAP///j//4A8AAAAAHgD///4//+APAAAAAB4A///+P////wAAAAAf/////j////8AAAAAH/////4/////AAAAAB/////+P////wAAAAA//////j////+AAAAAP/////4/////gAAAAD/////+P////8AAAAB//////j/////AAAAAf/////4/////4AAAAP/////+P////+AAAAH//////j/////wAAAB//////4/////+AAAA//////+P/////4AAA///////j////8/AAAfn/////4////+H8AAPw/////+P////B/wAf8H/////j////g/////g/////4////wf////8H////+P///4P/////h/////j///+H/////8f////4////z//8f//n////+P///////H////////j///////x////////4///////8f///////+P///////H////////j///////x////////4///////8f///////+P///////H////////j///////x////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4////////////////+P////////////////j////////////////4/////////w=="
+        }
+      ]
+    },
+    {
+      "id": "page_msq16qov",
+      "name": "wlan",
+      "elements": [
+        {
+          "id": "rectangle_msq16tw405r7",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#ffffff",
+          "filled": true
+        },
+        {
+          "id": "label_msq17192coqa",
+          "type": "label",
+          "text": "WLAN-Setup",
+          "x": 0,
+          "y": 0,
+          "color": "#2d4ba4",
+          "size": 4,
+          "variable": ""
+        },
+        {
+          "id": "input_msq17iu42eb0",
+          "type": "input",
+          "x": 21,
+          "y": 39,
+          "w": 140,
+          "h": 28,
+          "text": "",
+          "placeholder": "SSID (Name)...",
+          "variable": "WLANSSID",
+          "maxLength": 32,
+          "color": "#ffffff",
+          "background": "#333333"
+        },
+        {
+          "id": "input_msq17jt2b9e1",
+          "type": "input",
+          "x": 20,
+          "y": 79,
+          "w": 140,
+          "h": 28,
+          "text": "",
+          "placeholder": "Passwort",
+          "variable": "WLANPASSWORD",
+          "maxLength": 32,
+          "color": "#ffffff",
+          "background": "#333333"
+        },
+        {
+          "id": "checkbox_msq18b7o8ufv",
+          "type": "checkbox",
+          "text": "Merken",
+          "variable": "checkboxState123",
+          "x": 168,
+          "y": 45,
+          "checked": true,
+          "color": "#000000",
+          "size": 2
+        },
+        {
+          "id": "button_msq18vt9xd6j",
+          "type": "button",
+          "text": "Verbinden",
+          "x": 155,
+          "y": 76,
+          "w": 120,
+          "h": 36,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 5,
+          "action": "none",
+          "code": "textWindow(\"Connecting to Network... \\n\\n(i) 5 Seconds\");\nconfirmDialog(\"A02 Connect_WiFi\");\nWiFi.begin(WLANSSID, WLANPASSWORD);\ncurrentPage = PAGE_PAGE_MSEFFRPG;\ndrawCurrentPage();",
+          "executeCode": true
+        }
+      ]
+    },
+    {
+      "id": "page_msq1dru6",
+      "name": "Controls",
+      "elements": [
+        {
+          "id": "rectangle_msq1e09k6suf",
+          "type": "rectangle",
+          "x": 0,
+          "y": 0,
+          "w": 320,
+          "h": 240,
+          "color": "#2778be",
+          "filled": true
+        },
+        {
+          "id": "button_msq1e77n5i50",
+          "type": "button",
+          "text": "WLAN",
+          "x": 10,
+          "y": 11,
+          "w": 120,
+          "h": 50,
+          "color": "#ffffff",
+          "textColor": "#000000",
+          "radius": 50,
+          "action": "page:page_msq16qov",
+          "code": "",
+          "executeCode": false
+        },
+        {
+          "id": "button_msq1e88nd3ym",
+          "type": "button",
+          "text": "Mikrofon",
+          "x": 134,
+          "y": 13,
+          "w": 120,
+          "h": 50,
+          "color": "#2778be",
+          "textColor": "#000000",
+          "radius": 50,
+          "action": "none",
+          "code": "confirmDialog(\"A01 Init_Sound\");\ninitMicADC();\ninitSpeaker();\n",
+          "executeCode": true
+        },
+        {
+          "id": "button_msq1ht6hlz0l",
+          "type": "button",
+          "text": "WLAN Flash",
+          "x": 133,
+          "y": 80,
+          "w": 120,
+          "h": 50,
+          "color": "#ffffff",
+          "textColor": "#000000",
+          "radius": 50,
+          "action": "none",
+          "code": "textWindow(\"---WARNING---\\n\\nFlashing the ESP32 via WLAN without a valid binary can cause a softbrick.\\n\\nYou have 5 Seconds from now to abort by pressing RESET or powering off.\");\nconfirmDialog(\"A03 Enter_Flashing_Mode\");\nenterFlashMode();",
+          "executeCode": true
+        },
+        {
+          "id": "label_msq1iykyv5vb",
+          "type": "label",
+          "text": "^",
+          "x": 131,
+          "y": 202,
+          "color": "#ffffff",
+          "size": 6,
+          "variable": ""
+        },
+        {
+          "id": "touchZone_msq1j9pg1e4l",
+          "type": "touchZone",
+          "gesture": "swipeUp",
+          "x": 0,
+          "y": 179,
+          "w": 320,
+          "h": 60,
+          "action": "page:page_msefx142",
+          "executeCode": false,
+          "code": ""
+        },
+        {
+          "id": "declaration_msq1kemo8ck5",
+          "type": "declaration",
+          "code": "// Globale Deklarationen hier\n#include <ArduinoOTA.h>\n\nvoid enterFlashMode() {\n  Serial.println(\"Starte Flash-Modus...\");\n\n  WiFi.mode(WIFI_STA);\n  WiFi.begin(ssid, password);\n\n  Serial.print(\"Verbinde mit WLAN\");\n\n  unsigned long start = millis();\n\n  while (WiFi.status() != WL_CONNECTED) {\n    delay(250);\n    Serial.print(\".\");\n\n    // Nach 15 Sekunden abbrechen\n    if (millis() - start > 15000) {\n      Serial.println(\"\\nWLAN-Verbindung fehlgeschlagen!\");\n      return;\n    }\n  }\n\n  Serial.println();\n  Serial.println(\"WLAN verbunden.\");\n  Serial.print(\"IP-Adresse: \");\n  Serial.println(WiFi.localIP());\n  textWindowRunning(String(WiFi.localIP()).c_str());\n  ArduinoOTA.setHostname(\"ESP32-Flash\");\n\n  ArduinoOTA.onStart([]() {\n    Serial.println(\"Flash-Vorgang gestartet...\");\n  });\n\n  ArduinoOTA.onEnd([]() {\n    Serial.println(\"\\nFlash-Vorgang abgeschlossen!\");\n  });\n\n  ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {\n    Serial.printf(\"Flash: %u%%\\r\", (progress * 100) / total);\n  });\n\n  ArduinoOTA.onError([](ota_error_t error) {\n    Serial.printf(\"\\nOTA-Fehler: %u\\n\", error);\n  });\n\n  ArduinoOTA.begin();\n\n  Serial.println(\"================================\");\n  Serial.println(\"ESP32 ist jetzt im Flash-Modus!\");\n  Serial.println(\"================================\");\n\n  // Im Flash-Modus bleiben\n  while (true) {\n    ArduinoOTA.handle();\n    delay(1);\n  }\n}\n\n\n#include <Adafruit_NeoPixel.h>\n\n#define MATRIX_PIN   27\n#define MATRIX_LEDS  25\n#define MATRIX_W      5\n#define MATRIX_H      5\n\nAdafruit_NeoPixel matrix(\n  MATRIX_LEDS,\n  MATRIX_PIN,\n  NEO_GRB + NEO_KHZ800\n);\n\n\n// --------------------------------------------------\n// Matrix initialisieren\n// --------------------------------------------------\n\nvoid initMatrix() {\n  matrix.begin();\n  matrix.setBrightness(40);\n  matrix.clear();\n  matrix.show();\n}\n\n\n// --------------------------------------------------\n// LED-Index für deine Serpentinen-Verdrahtung\n// --------------------------------------------------\n\nint matrixIndex(int x, int y) {\n\n  if (x < 0 || x >= MATRIX_W ||\n      y < 0 || y >= MATRIX_H)\n    return -1;\n\n  // Jede zweite Reihe ist umgedreht\n  if (y & 1)\n    x = MATRIX_W - 1 - x;\n\n  return y * MATRIX_W + x;\n}\n\n\n// --------------------------------------------------\n// 5x5-Schrift\n// --------------------------------------------------\n\nconst byte fontH[5] = {\n  0b10001,\n  0b10001,\n  0b11111,\n  0b10001,\n  0b10001\n};\n\nconst byte fontA[5] = {\n  0b01110,\n  0b10001,\n  0b11111,\n  0b10001,\n  0b10001\n};\n\nconst byte fontL[5] = {\n  0b10000,\n  0b10000,\n  0b10000,\n  0b10000,\n  0b11111\n};\n\nconst byte fontO[5] = {\n  0b01110,\n  0b10001,\n  0b10001,\n  0b10001,\n  0b01110\n};\n\nconst byte fontW[5] = {\n  0b10001,\n  0b10001,\n  0b10101,\n  0b10101,\n  0b01010\n};\n\nconst byte fontE[5] = {\n  0b11111,\n  0b10000,\n  0b11110,\n  0b10000,\n  0b11111\n};\n\nconst byte fontT[5] = {\n  0b11111,\n  0b00100,\n  0b00100,\n  0b00100,\n  0b00100\n};\n\n\n// --------------------------------------------------\n// Farbe: langsam durch den Farbkreis\n// --------------------------------------------------\n\nuint32_t matrixColor(byte hue) {\n\n  if (hue < 85) {\n    return matrix.Color(\n      255 - hue * 3,\n      hue * 3,\n      0\n    );\n  }\n\n  if (hue < 170) {\n    hue -= 85;\n\n    return matrix.Color(\n      0,\n      255 - hue * 3,\n      hue * 3\n    );\n  }\n\n  hue -= 170;\n\n  return matrix.Color(\n    hue * 3,\n    0,\n    255 - hue * 3\n  );\n}\n\n\n// --------------------------------------------------\n// Einen Buchstaben zeichnen\n// --------------------------------------------------\n\nvoid drawMatrixChar(\n  const byte character[5],\n  int offsetX,\n  uint32_t color\n) {\n\n  for (int y = 0; y < 5; y++) {\n\n    for (int x = 0; x < 5; x++) {\n\n      if (character[y] & (1 << (4 - x))) {\n\n        int px = offsetX + x;\n        int index = matrixIndex(px, y);\n\n        if (index >= 0)\n          matrix.setPixelColor(index, color);\n      }\n    }\n  }\n}\n\n\n// --------------------------------------------------\n// \"HALLO WELT\"\n// --------------------------------------------------\n\nvoid writeHello() {\n\n  static int scroll = MATRIX_W;\n  static uint8_t hue = 0;\n  static unsigned long lastFrame = 0;\n\n  // 25 FPS\n  const unsigned long frameTime = 1000 / 25;\n\n  unsigned long now = millis();\n\n  if (now - lastFrame < frameTime)\n    return;\n\n  lastFrame = now;\n\n  // Farbe unabhängig vom Text verändern\n  hue++;\n\n  uint32_t color = matrixColor(hue);\n\n  matrix.clear();\n\n  /*\n       HALLO WELT\n\n       Jeder Buchstabe = 5 Pixel breit\n       + 1 Pixel Abstand\n  */\n\n  const byte* text[] = {\n    fontH,\n    fontA,\n    fontL,\n    fontL,\n    fontO,\n    nullptr,\n    fontW,\n    fontE,\n    fontL,\n    fontT\n  };\n\n  const int textLength = 10;\n\n  for (int i = 0; i < textLength; i++) {\n\n    // Leerzeichen\n    if (text[i] == nullptr)\n      continue;\n\n    int x = scroll + i * 6;\n\n    drawMatrixChar(\n      text[i],\n      x,\n      color\n    );\n  }\n\n  matrix.show();\n\n  // Laufschrift\n  scroll--;\n\n  // 10 Zeichen × 6 Pixel\n  const int textWidth = textLength * 6;\n\n  if (scroll < -textWidth)\n    scroll = MATRIX_W;\n}",
+          "x": 319,
+          "y": 41
+        },
+        {
+          "id": "setupCode_msq24v1dc4y6",
+          "type": "setupCode",
+          "code": "// Code für setup()\ninitMatrix();",
+          "x": 319,
+          "y": 73
+        },
+        {
+          "id": "button_msq25fq3d84k",
+          "type": "button",
+          "text": "Run TBS SmartLight Test",
+          "x": 58,
+          "y": 138,
+          "w": 181,
+          "h": 30,
+          "color": "#1d2a38",
+          "textColor": "#ffffff",
+          "radius": 5,
+          "action": "none",
+          "code": "writeHello();",
+          "executeCode": true
+        }
+      ]
+    }
+  ]
+}
