@@ -728,7 +728,7 @@ void getWeather(volatile int &targetTemp, volatile int &targetHum) {
 int getDailyWeatherValue(uint8_t dayIndex, bool maximum, bool rainChance) {
   if (WiFi.status() != WL_CONNECTED) {
     Serial.println("WLAN nicht verbunden!");
-    return;
+    return 0;
   }
 
   HTTPClient http;
@@ -748,7 +748,7 @@ int getDailyWeatherValue(uint8_t dayIndex, bool maximum, bool rainChance) {
   if (error) return 0;
   if (rainChance) return (int)round(doc["daily"]["precipitation_probability_max"][dayIndex] | 0);
   return (int)round(doc["daily"][maximum ? "temperature_2m_max" : "temperature_2m_min"][dayIndex] | 0.0);
-  }
+  } 
 }
 int getRainChanceNext5Days() {
   int result = 0;
